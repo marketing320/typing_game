@@ -1,0 +1,36 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+node_modules
+vendor
+
+# Built assets (rebuilt inside Docker)
+public/build
+public/hot
+
+# Laravel runtime (generated at container start)
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/*
+storage/logs/*
+bootstrap/cache/*
+
+# Dev/test only
+tests/
+*.test.js
+*.spec.js
+phpunit.xml
+.phpunit.*
+
+# Docs & IDE
+docs/
+*.md
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,101 @@
+services:
+
+  # ── MySQL 8.4 ──────────────────────────────────────────────────────────────
+  tmg_db:
+    image: mysql:8.4
+    container_name: tmg_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${DB_DATABASE:-typing_game}
+      MYSQL_USER:          ${DB_USERNAME:-tmg}
+      MYSQL_PASSWORD:      ${DB_PASSWORD}
+    volumes:
+      - tmg_db_data:/var/lib/mysql
+    networks:
+      - tmg_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1",
+             "-u", "root", "--password=${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ── Node.js OTP mailer ─────────────────────────────────────────────────────
+  tmg_mailer:
+    build:
+      context: ./apps/mailer
+      dockerfile: Dockerfile
+    container_name: tmg_mailer
+    restart: unless-stopped
+    env_file:
+      - ./apps/mailer/.env
+    networks:
+      - tmg_net
+
+  # ── Laravel web (Nginx + PHP-FPM) ─────────────────────────────────────────
+  tmg_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tmg_app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    env_file:
+      - .env.docker
+    environment:
+      DB_HOST:              tmg_db
+      DB_PORT:              3306
+      MAILER_SERVICE_URL:   http://tmg_mailer:4001
+    volumes:
+      - tmg_storage:/var/www/html/storage/app
+      - tmg_logs:/var/www/html/storage/logs
+    depends_on:
+      tmg_db:
+        condition: service_healthy
+      tmg_mailer:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - tmg_net
+
+  # ── Laravel queue worker ───────────────────────────────────────────────────
+  tmg_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tmg_worker
+    restart: unless-stopped
+    entrypoint: ["/worker.sh"]
+    env_file:
+      - .env.docker
+    environment:
+      DB_HOST:              tmg_db
+      DB_PORT:              3306
+      MAILER_SERVICE_URL:   http://tmg_mailer:4001
+    volumes:
+      - tmg_storage:/var/www/html/storage/app
+      - tmg_logs:/var/www/html/storage/logs
+    depends_on:
+      tmg_db:
+        condition: service_healthy
+      tmg_app:
+        condition: service_healthy
+    networks:
+      - tmg_net
+
+networks:
+  tmg_net:
+    driver: bridge
+
+volumes:
+  tmg_db_data:
+  tmg_storage:
+  tmg_logs:
