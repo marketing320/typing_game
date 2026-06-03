@@ -6,16 +6,16 @@ FROM node:20-alpine AS assets
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --ignore-scripts
+RUN npm install --ignore-scripts --no-audit --no-fund
 
 COPY . .
 RUN npm run build
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Stage 2 — PHP 8.3 production image (Nginx + PHP-FPM via Supervisor)
+# Stage 2 — PHP 8.4 production image (Nginx + PHP-FPM via Supervisor)
 # ──────────────────────────────────────────────────────────────────────────────
-FROM php:8.3-fpm-alpine AS app
+FROM php:8.4-fpm-alpine AS app
 
 # System packages
 RUN apk add --no-cache \
