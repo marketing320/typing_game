@@ -1,0 +1,11 @@
+{
+  "name": "@typing-monkey/shared",
+  "version": "1.0.0",
+  "description": "Shared utilities for Typing Monkey",
+  "type": "module",
+  "exports": {
+    "./scoring": "./scoring/scoring.js",
+    "./geofence": "./geofence/haversine.js",
+    "./constants": "./constants/game.js"
+  }
+}

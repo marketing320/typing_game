@@ -1,0 +1,16 @@
+{
+  "name": "@typing-monkey/mailer",
+  "version": "1.0.0",
+  "description": "OTP email delivery service for Typing Monkey",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.7",
+    "dotenv": "^16.3.1"
+  }
+}

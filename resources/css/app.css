@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* ============================================================
+   PUBLIC GAME UI — RETRO PIXEL / 8-BIT THEME
+   ============================================================ */
+
+.game-ui {
+    font-family: 'Press Start 2P', ui-monospace, monospace;
+}
+
+/* Remove all border-radius for the retro pixel look */
+.game-ui *,
+.game-ui *::before,
+.game-ui *::after {
+    border-radius: 0 !important;
+}
+
+/* Pixel drop shadow cards */
+.pixel-card {
+    border: 2px solid #92400e;
+    box-shadow: 4px 4px 0 #451a03;
+}
+
+.pixel-card-light {
+    border: 2px solid #fde68a;
+    box-shadow: 3px 3px 0 #d97706;
+}
+
+/* Pixel buttons — press-down effect on click */
+.pixel-btn {
+    border: 2px solid #78350f;
+    box-shadow: 3px 3px 0 #451a03;
+    transition: transform 80ms, box-shadow 80ms;
+    cursor: pointer;
+}
+
+.pixel-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 #451a03;
+}
+
+.pixel-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+/* ============================================================
+   TYPING DISPLAY
+   word-space = char-space (monospace pixel font, word-spacing: 0)
+   ============================================================ */
+
+#text-display {
+    font-family: 'Press Start 2P', ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 2.8;
+    word-spacing: 0;
+    letter-spacing: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Character state transitions */
+.char {
+    display: inline;
+    transition: color 0.05s;
+}
+
+/* Override Tailwind animate-pulse with a pixel blinking cursor */
+@keyframes pixelCursor {
+    0%, 49% { border-bottom-color: #d97706; }
+    50%, 100% { border-bottom-color: transparent; }
+}
+
+.game-ui .char.animate-pulse {
+    animation: pixelCursor 0.7s step-start infinite;
+    opacity: 1 !important;
+}
+
+/* Leaderboard live-update row highlight */
+@keyframes rowHighlight {
+    0%   { background-color: #fef3c7; } /* amber-100 */
+    100% { background-color: transparent; }
+}
+
+.row-highlight {
+    animation: rowHighlight 1.2s ease-out forwards;
+}
+
+/* Monkey mascot bounce */
+@keyframes monkeyBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Touch screens */
+@media (pointer: coarse) {
+    #text-display { font-size: 0.625rem; }
+}
