@@ -13,6 +13,7 @@ class LeaderboardService
         $attempts = ChallengeAttempt::with('player')
             ->where('challenge_id', $challenge->id)
             ->where('status', 'completed')
+            ->whereHas('player')
             ->orderByDesc('wpm')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')
@@ -33,6 +34,7 @@ class LeaderboardService
     {
         $attempts = ChallengeAttempt::with(['player', 'challenge'])
             ->where('status', 'completed')
+            ->whereHas('player')
             ->orderByDesc('wpm')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')

@@ -61,9 +61,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::prefix('players')->name('players.')->group(function () {
             Route::get('/', [AdminPlayerController::class, 'index'])->name('index');
+            // Bulk routes must be declared before /{player} to avoid wildcard conflict
+            Route::post('/bulk-destroy', [AdminPlayerController::class, 'bulkDestroy'])->name('bulk-destroy');
+            Route::post('/bulk-block', [AdminPlayerController::class, 'bulkBlock'])->name('bulk-block');
+            Route::post('/bulk-unblock', [AdminPlayerController::class, 'bulkUnblock'])->name('bulk-unblock');
             Route::get('/{player}', [AdminPlayerController::class, 'show'])->name('show');
             Route::post('/{player}/block', [AdminPlayerController::class, 'block'])->name('block');
             Route::post('/{player}/unblock', [AdminPlayerController::class, 'unblock'])->name('unblock');
+            Route::delete('/{player}', [AdminPlayerController::class, 'destroy'])->name('destroy');
         });
 
         Route::get('/attempts', [AdminAttemptController::class, 'index'])->name('attempts.index');

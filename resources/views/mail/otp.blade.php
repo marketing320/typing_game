@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your OTP Code</title>
 </head>
-<body style="margin:0;padding:0;background-color:#fef3c7;font-family:Arial,sans-serif;">
+<body style="margin:0;padding:0;font-family:Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#fef3c7;padding:32px 16px;">
     <tr>
       <td align="center">

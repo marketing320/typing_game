@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
             GeofenceSeeder::class,
             ChallengeSeeder::class,
             SystemSettingSeeder::class,
-            LeaderboardSeeder::class,
         ]);
     }
 }

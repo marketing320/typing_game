@@ -32,7 +32,7 @@
             </div>
             <div><dt class="text-gray-400 text-xs">Joined</dt><dd>{{ $player->created_at->format('d M Y') }}</dd></div>
         </dl>
-        <div class="mt-5 pt-4 border-t border-gray-100">
+        <div class="mt-5 pt-4 border-t border-gray-100 space-y-2">
             @if($player->is_blocked)
             <form method="POST" action="{{ route('admin.players.unblock', $player) }}">
                 @csrf
@@ -44,6 +44,14 @@
                 <button class="w-full bg-red-500 text-white text-sm font-bold py-2 rounded-lg hover:bg-red-600 transition">Block Player</button>
             </form>
             @endif
+            <form method="POST" action="{{ route('admin.players.destroy', $player) }}"
+                  onsubmit="return confirm('Delete {{ addslashes($player->username) }}?\n\nTheir account will be soft-deleted and removed from the leaderboard.\nAttempt records are kept for auditing.')">
+                @csrf
+                @method('DELETE')
+                <button class="w-full bg-gray-100 text-gray-500 text-sm font-bold py-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition">
+                    Delete Player
+                </button>
+            </form>
         </div>
     </div>
 
