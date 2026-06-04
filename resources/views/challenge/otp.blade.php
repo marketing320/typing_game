@@ -12,7 +12,7 @@
         <p class="text-amber-600 text-[10px] mt-3 leading-loose">Enter the 6-digit code we sent to <strong>{{ session('challenge_email') }}</strong></p>
     </div>
 
-    @if(app()->environment('local') && session('dev_otp'))
+    {{-- @if(app()->environment('local') && session('dev_otp'))
     <div class="mb-5 bg-amber-950 border-2 border-amber-700 px-4 py-3 text-xs">
         <div class="flex items-center gap-2 text-amber-400 font-bold mb-2">
             <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i>
@@ -27,7 +27,7 @@
             </button>
         </div>
     </div>
-    @endif
+    @endif--}}
 
     <div class="bg-white pixel-card p-6">
         <div id="otp-error" class="hidden mb-4 bg-red-50 border-2 border-red-300 text-red-600 px-4 py-3 text-[10px] flex items-center gap-2">

@@ -125,6 +125,5 @@ return [
 
     'otp_expiry_minutes' => (int) env('OTP_EXPIRY_MINUTES', 10),
     'otp_max_attempts' => (int) env('OTP_MAX_ATTEMPTS', 5),
-    'mailer_service_url' => env('MAILER_SERVICE_URL', 'http://localhost:4001'),
 
 ];
