@@ -18,6 +18,12 @@
     <span id="bulk-count" class="text-sm font-semibold mr-3">0 selected</span>
 
     <button type="button"
+        onclick="exportSelected()"
+        class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
+        Export CSV
+    </button>
+
+    <button type="button"
         onclick="submitBulk('form-bulk-delete', 'Delete {count} selected player(s)?\nThey will be removed from the leaderboard.\nThis can be reversed in the database.')"
         class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
         Delete Selected
@@ -39,6 +45,7 @@
     <form id="form-bulk-delete"   method="POST" action="{{ route('admin.players.bulk-destroy') }}"  class="hidden">@csrf</form>
     <form id="form-bulk-block"    method="POST" action="{{ route('admin.players.bulk-block') }}"    class="hidden">@csrf</form>
     <form id="form-bulk-unblock"  method="POST" action="{{ route('admin.players.bulk-unblock') }}"  class="hidden">@csrf</form>
+    <form id="form-bulk-export"   method="POST" action="{{ route('admin.players.bulk-export') }}"   class="hidden">@csrf</form>
 </div>
 
 {{-- Table --}}
@@ -49,7 +56,7 @@
                 <th class="px-4 py-3 w-8">
                     <input type="checkbox" id="select-all" class="rounded cursor-pointer">
                 </th>
-                <th class="px-4 py-3 text-left">Username</th>
+                <th class="px-4 py-3 text-left">Player</th>
                 <th class="px-4 py-3 text-left">Email</th>
                 <th class="px-4 py-3 text-center">Verified</th>
                 <th class="px-4 py-3 text-center">Attempts</th>
@@ -63,7 +70,15 @@
                 <td class="px-4 py-3">
                     <input type="checkbox" class="player-checkbox rounded cursor-pointer" value="{{ $p->id }}">
                 </td>
-                <td class="px-4 py-3 font-semibold">{{ $p->username }}</td>
+                <td class="px-4 py-3">
+                    <span class="font-semibold block">{{ $p->username }}</span>
+                    @if($p->full_name)
+                    <span class="text-xs text-gray-500 block">{{ $p->full_name }}</span>
+                    @endif
+                    @if($p->phone)
+                    <span class="text-xs text-gray-400 block font-mono">{{ $p->phone }}</span>
+                    @endif
+                </td>
                 <td class="px-4 py-3 text-gray-500 text-xs">{{ $p->email }}</td>
                 <td class="px-4 py-3 text-center">
                     @if($p->email_verified_at)
@@ -149,6 +164,17 @@ document.querySelectorAll('.player-checkbox').forEach(c => {
     c.addEventListener('change', syncBulkBar);
 });
 
+function injectIds(form) {
+    form.querySelectorAll('input[name="ids[]"]').forEach(i => i.remove());
+    getChecked().forEach(c => {
+        const input = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = 'ids[]';
+        input.value = c.value;
+        form.appendChild(input);
+    });
+}
+
 function submitBulk(formId, confirmTpl) {
     const checked = getChecked();
     if (checked.length === 0) return;
@@ -157,19 +183,16 @@ function submitBulk(formId, confirmTpl) {
     if (!confirm(msg)) return;
 
     const form = document.getElementById(formId);
+    injectIds(form);
+    form.submit();
+}
 
-    // Remove any previously injected ids
-    form.querySelectorAll('input[name="ids[]"]').forEach(i => i.remove());
+function exportSelected() {
+    const checked = getChecked();
+    if (checked.length === 0) return;
 
-    // Inject selected ids
-    checked.forEach(c => {
-        const input = document.createElement('input');
-        input.type  = 'hidden';
-        input.name  = 'ids[]';
-        input.value = c.value;
-        form.appendChild(input);
-    });
-
+    const form = document.getElementById('form-bulk-export');
+    injectIds(form);
     form.submit();
 }
 </script>

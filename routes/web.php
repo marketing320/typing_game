@@ -30,6 +30,7 @@ Route::prefix('challenge')->name('challenge.')->group(function () {
     Route::get('/otp', [ChallengeAccessController::class, 'otpForm'])->name('otp');
     Route::post('/verify-otp', [OtpController::class, 'verify'])->name('verify-otp');
     Route::get('/play', [ChallengeGameController::class, 'play'])->name('play');
+    Route::post('/save-profile', [ChallengeGameController::class, 'saveProfile'])->name('save-profile');
     Route::post('/start', [ChallengeGameController::class, 'start'])->name('start');
     Route::post('/submit', [ChallengeGameController::class, 'submit'])->name('submit');
     Route::get('/result/{attempt}', [ChallengeGameController::class, 'result'])->name('result');
@@ -65,6 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/bulk-destroy', [AdminPlayerController::class, 'bulkDestroy'])->name('bulk-destroy');
             Route::post('/bulk-block', [AdminPlayerController::class, 'bulkBlock'])->name('bulk-block');
             Route::post('/bulk-unblock', [AdminPlayerController::class, 'bulkUnblock'])->name('bulk-unblock');
+            Route::post('/bulk-export', [AdminPlayerController::class, 'bulkExport'])->name('bulk-export');
             Route::get('/{player}', [AdminPlayerController::class, 'show'])->name('show');
             Route::post('/{player}/block', [AdminPlayerController::class, 'block'])->name('block');
             Route::post('/{player}/unblock', [AdminPlayerController::class, 'unblock'])->name('unblock');

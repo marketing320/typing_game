@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChallengeAttempt;
 use App\Models\Player;
+use App\Models\SystemSetting;
 use App\Models\TypingChallenge;
 use App\Services\ChallengeAttemptService;
 use App\Services\GeofenceService;
@@ -45,7 +46,28 @@ class ChallengeGameController extends Controller
             return redirect()->route('home')->with('error', 'Challenge text not available.');
         }
 
-        return view('challenge.play', compact('player', 'challenge', 'text'));
+        $referralOptions = array_map('trim', explode(',', SystemSetting::get('referral_source_options', 'Social media,Friend / Family,Event poster,Other')));
+
+        return view('challenge.play', compact('player', 'challenge', 'text', 'referralOptions'));
+    }
+
+    public function saveProfile(Request $request)
+    {
+        $playerId = session('verified_player_id');
+
+        if (!$playerId) {
+            return response()->json(['success' => false, 'message' => 'Session expired, please refresh.'], 401);
+        }
+
+        $data = $request->validate([
+            'full_name'       => 'required|string|max:100',
+            'phone'           => 'required|string|max:30',
+            'referral_source' => 'required|string|max:100',
+        ]);
+
+        Player::where('id', $playerId)->update($data);
+
+        return response()->json(['success' => true]);
     }
 
     public function start(Request $request)

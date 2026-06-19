@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Player extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['username', 'email', 'email_verified_at', 'last_login_at', 'is_blocked'];
+    protected $fillable = ['username', 'email', 'full_name', 'phone', 'referral_source', 'email_verified_at', 'last_login_at', 'is_blocked'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',

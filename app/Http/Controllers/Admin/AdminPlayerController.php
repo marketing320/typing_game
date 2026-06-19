@@ -92,4 +92,51 @@ class AdminPlayerController extends Controller
         return redirect()->route('admin.players.index')
             ->with('success', "{$count} player(s) unblocked.");
     }
+
+    public function bulkExport(Request $request)
+    {
+        $ids = array_filter((array) $request->input('ids', []));
+
+        if (empty($ids)) {
+            return back()->with('error', 'No players selected.');
+        }
+
+        $players = Player::withCount('challengeAttempts')
+            ->whereIn('id', $ids)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $filename = 'players_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+        ];
+
+        $callback = function () use ($players) {
+            $out = fopen('php://output', 'w');
+            // UTF-8 BOM so Excel opens it correctly
+            fputs($out, "\xEF\xBB\xBF");
+            fputcsv($out, ['ID', 'Username', 'Full Name', 'Email', 'Phone', 'Referral Source', 'Verified', 'Attempts', 'Blocked', 'Joined']);
+            foreach ($players as $p) {
+                fputcsv($out, [
+                    $p->id,
+                    $p->username,
+                    $p->full_name ?? '',
+                    $p->email,
+                    $p->phone ?? '',
+                    $p->referral_source ?? '',
+                    $p->email_verified_at ? 'Yes' : 'No',
+                    $p->challenge_attempts_count,
+                    $p->is_blocked ? 'Yes' : 'No',
+                    $p->created_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+            fclose($out);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

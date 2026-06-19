@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', $player->username)
-@section('page-title', $player->username)
+@section('title', $player->full_name ?? $player->username)
+@section('page-title', $player->full_name ?? $player->username)
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -8,7 +8,11 @@
     <div class="bg-white rounded-xl shadow border border-gray-100 p-6">
         <h3 class="font-bold text-gray-700 mb-4">Player Info</h3>
         <dl class="space-y-3 text-sm">
+            <div><dt class="text-gray-400 text-xs">Username</dt><dd class="font-medium">{{ $player->username }}</dd></div>
+            <div><dt class="text-gray-400 text-xs">Full Name</dt><dd class="font-medium">{{ $player->full_name ?? '—' }}</dd></div>
             <div><dt class="text-gray-400 text-xs">Email</dt><dd class="font-medium">{{ $player->email }}</dd></div>
+            <div><dt class="text-gray-400 text-xs">Phone</dt><dd class="font-medium font-mono">{{ $player->phone ?? '—' }}</dd></div>
+            <div><dt class="text-gray-400 text-xs">Referral Source</dt><dd class="font-medium">{{ $player->referral_source ?? '—' }}</dd></div>
             <div>
                 <dt class="text-gray-400 text-xs">Verified</dt>
                 <dd class="flex items-center gap-1.5 font-medium">

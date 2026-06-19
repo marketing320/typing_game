@@ -13,6 +13,7 @@ class AdminSettingController extends Controller
         'otp_expiry_minutes' => 'OTP Expiry (minutes)',
         'otp_max_attempts' => 'OTP Max Attempts',
         'maintenance_mode' => 'Maintenance Mode',
+        'referral_source_options' => 'Referral Source Options',
     ];
 
     public function index()
