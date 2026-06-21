@@ -12,14 +12,15 @@ class TypingChallenge extends Model
     use HasFactory;
     protected $fillable = [
         'title', 'description', 'status', 'start_at', 'end_at',
-        'allow_retry_next_day', 'max_attempts_per_day', 'require_geofence',
-        'geofence_rule_id', 'created_by',
+        'allow_retry_next_day', 'max_attempts_per_day', 'require_unique_email',
+        'require_geofence', 'geofence_rule_id', 'created_by',
     ];
 
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
         'allow_retry_next_day' => 'boolean',
+        'require_unique_email' => 'boolean',
         'require_geofence' => 'boolean',
     ];
 

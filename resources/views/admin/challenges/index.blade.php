@@ -16,6 +16,7 @@
                 <th class="px-4 py-3 text-center">Status</th>
                 <th class="px-4 py-3 text-center">Geofence</th>
                 <th class="px-4 py-3 text-center">Retry</th>
+                <th class="px-4 py-3 text-center">Unique Email</th>
                 <th class="px-4 py-3 text-right">Created</th>
                 <th class="px-4 py-3 text-center">Actions</th>
             </tr>
@@ -46,19 +47,26 @@
                         <span class="text-gray-300">—</span>
                     @endif
                 </td>
+                <td class="px-4 py-3 text-center">
+                    @if($c->require_unique_email)
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-100"><i data-lucide="check" class="w-3 h-3 text-green-600"></i></span>
+                    @else
+                        <span class="text-gray-300">—</span>
+                    @endif
+                </td>
                 <td class="px-4 py-3 text-right text-gray-400 text-xs">{{ $c->created_at->format('d M Y') }}</td>
                 <td class="px-4 py-3 text-center">
                     <div class="flex gap-2 justify-center">
                         <a href="{{ route('admin.challenges.edit', $c) }}" class="text-blue-500 hover:underline text-xs">Edit</a>
-                        <form method="POST" action="{{ route('admin.challenges.destroy', $c) }}" onsubmit="return confirm('Delete this challenge?')">
+                        <form method="POST" action="{{ route('admin.challenges.destroy', $c) }}" class="js-delete-form" data-title="{{ $c->title }}">
                             @csrf @method('DELETE')
-                            <button class="text-red-400 hover:underline text-xs">Delete</button>
+                            <button type="submit" class="text-red-400 hover:underline text-xs">Delete</button>
                         </form>
                     </div>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-300">No challenges yet.</td></tr>
+            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-300">No challenges yet.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -67,3 +75,31 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.querySelectorAll('.js-delete-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+        if (form.dataset.confirmed) return;
+        e.preventDefault();
+        const title = form.dataset.title || 'this challenge';
+        if (typeof Swal === 'undefined') {
+            if (confirm('Delete "' + title + '"?')) { form.dataset.confirmed = '1'; form.submit(); }
+            return;
+        }
+        Swal.fire({
+            title: 'Delete this challenge?',
+            html: 'You are about to delete <b>"' + title + '"</b>.<br>This cannot be undone from the dashboard.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+        }).then(function (result) {
+            if (result.isConfirmed) { form.dataset.confirmed = '1'; form.submit(); }
+        });
+    });
+});
+</script>
+@endpush

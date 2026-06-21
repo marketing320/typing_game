@@ -14,6 +14,28 @@
         <div class="text-center text-amber-700 text-xs py-12">No rehearsal text available yet. Check back soon!</div>
     @else
 
+    <!-- Rules modal -->
+    <div id="rules-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-8 max-w-sm w-full text-center pixel-card border-2 border-amber-900" style="box-shadow: 5px 5px 0 #1c0a00;">
+            <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
+                <i data-lucide="scroll-text" class="w-7 h-7 text-amber-700"></i>
+            </div>
+            <h2 class="text-xs font-bold text-amber-900 mb-4">Before You Start</h2>
+            <ul class="text-left space-y-3 mb-5">
+                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                    <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+                    You cannot use your backspace button.
+                </li>
+            </ul>
+            <p class="text-[10px] text-amber-700 font-bold mb-6 leading-loose">HAVE FUN! 🐵</p>
+            <button type="button" onclick="dismissRules()"
+                class="w-full bg-amber-700 text-white text-[10px] font-bold py-3 pixel-btn hover:bg-amber-800 transition-colors"
+                style="box-shadow: 3px 3px 0 #1c0a00; border-color: #451a03;">
+                Got it, let's practice! &gt;&gt;
+            </button>
+        </div>
+    </div>
+
     <!-- Stats bar -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4" id="stats-bar">
         <div class="bg-white p-3 text-center pixel-card">
@@ -227,7 +249,12 @@ function resetGame() {
     input.focus();
 }
 
+function dismissRules() {
+    const m = document.getElementById('rules-modal');
+    if (m) m.classList.add('hidden');
+    input.focus();
+}
+
 highlightCurrent();
-input.focus();
 </script>
 @endpush

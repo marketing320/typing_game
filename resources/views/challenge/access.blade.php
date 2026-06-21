@@ -82,6 +82,28 @@
         </a>
     </div>
 </div>
+
+<!-- Email already used modal -->
+<div id="email-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div class="bg-white p-8 max-w-sm w-full text-center pixel-card">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
+            <i data-lucide="mail-warning" class="w-7 h-7 text-amber-600"></i>
+        </div>
+        <h2 class="text-xs font-bold text-amber-800 mb-3">Email Already Used</h2>
+        <p id="email-used-message" class="text-gray-600 text-[10px] mb-6 leading-loose">This email has already been used for today's challenge. Come back tomorrow for another shot!</p>
+        <div class="space-y-2">
+            <a href="{{ route('leaderboard.index') }}" class="flex items-center justify-center gap-2 bg-amber-700 text-white text-[10px] font-bold py-3 pixel-btn hover:bg-amber-800 transition-colors" style="box-shadow: 3px 3px 0 #1c0a00; border-color: #451a03;">
+                See the Leaderboard <i data-lucide="award" class="w-4 h-4"></i>
+            </a>
+            <a href="{{ route('rehearsal.index') }}" class="flex items-center justify-center gap-2 bg-amber-100 text-amber-800 text-[10px] font-bold py-3 pixel-btn hover:bg-amber-200 transition-colors">
+                Try Rehearsal Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <button type="button" onclick="document.getElementById('email-modal').classList.add('hidden')" class="w-full text-amber-500 text-[10px] py-2 hover:text-amber-700 transition-colors">
+                Use a different email
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -164,6 +186,12 @@ document.getElementById('access-form').addEventListener('submit', async function
 
         if (data.success) {
             window.location.href = OTP_PAGE;
+        } else if (data.code === 'email_used_today') {
+            document.getElementById('email-used-message').textContent = data.message;
+            document.getElementById('email-modal').classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = 'Send OTP <i data-lucide="send" class="w-4 h-4"></i>';
+            lucide.createIcons();
         } else {
             document.getElementById('form-error-text').textContent = data.message;
             errEl.classList.remove('hidden');

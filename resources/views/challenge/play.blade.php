@@ -98,6 +98,43 @@
     </div>
 </div>
 
+{{-- Rules modal (shown after profile, before START) --}}
+<div id="rules-modal" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
+    <div class="bg-white max-w-sm w-full pixel-card border-2 border-amber-900 my-6" style="box-shadow: 5px 5px 0 #1c0a00;">
+        <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 text-center">
+            <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
+                <i data-lucide="scroll-text" class="w-5 h-5 text-amber-200"></i>
+            </div>
+            <h2 class="text-[11px] font-bold text-white">the rules 📜</h2>
+            <p class="text-amber-400 text-[10px] mt-1 leading-loose">read before you smash that keyboard</p>
+        </div>
+        <div class="p-5">
+            <ul class="text-left space-y-3 mb-5">
+                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                    <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+                    You cannot use your backspace button.
+                </li>
+                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                    <i data-lucide="lock" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                    All final score calculations are finalized and cannot be altered by any means.
+                </li>
+                @if($challenge->allow_retry_next_day || $challenge->require_unique_email)
+                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                    <i data-lucide="calendar-heart" class="w-4 h-4 text-green-600 shrink-0 mt-0.5"></i>
+                    You may come back and challenge us again tomorrow 😉
+                </li>
+                @endif
+            </ul>
+            <p class="text-center text-[10px] text-amber-700 font-bold mb-5 leading-loose">HAVE FUN AND GOODLUCK! 🍀</p>
+            <button type="button" onclick="dismissRules()"
+                class="w-full bg-amber-800 text-amber-100 text-[10px] font-bold py-3.5 pixel-btn hover:bg-amber-700 transition-colors"
+                style="border-color: #1c0a00; box-shadow: 3px 3px 0 #1c0a00;">
+                i'm ready! &gt;&gt;
+            </button>
+        </div>
+    </div>
+</div>
+
 {{-- Main game --}}
 <div class="max-w-3xl mx-auto px-4 py-8">
 
@@ -364,6 +401,8 @@ async function submitProfile() {
 
         if (data.success) {
             document.getElementById('profile-modal').classList.add('hidden');
+            document.getElementById('rules-modal').classList.remove('hidden');
+            lucide.createIcons();
         } else {
             btn.disabled = false;
             btn.textContent = "aight let's gooo!! >>";
@@ -374,6 +413,10 @@ async function submitProfile() {
         btn.textContent = "aight let's gooo!! >>";
         alert('network error bestie 😭 refresh and try again');
     }
+}
+
+function dismissRules() {
+    document.getElementById('rules-modal').classList.add('hidden');
 }
 
 // Prefill existing player data

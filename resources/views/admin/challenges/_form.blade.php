@@ -51,6 +51,28 @@
     </label>
 </div>
 
+{{-- Unique email per day --}}
+<div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2" id="unique-email-box">
+    <div class="flex items-start justify-between">
+        <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+            <input type="checkbox" name="require_unique_email" value="1" id="cb-unique-email"
+                {{ old('require_unique_email', $challenge?->require_unique_email) ? 'checked' : '' }}
+                class="rounded" onchange="toggleUniqueEmail()">
+            Require Unique Email
+        </label>
+        <span id="ue-badge-off" class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded {{ old('require_unique_email', $challenge?->require_unique_email) ? 'hidden' : '' }}">
+            OFF
+        </span>
+        <span id="ue-badge-on" class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded {{ old('require_unique_email', $challenge?->require_unique_email) ? '' : 'hidden' }}">
+            ON — one entry per email per day
+        </span>
+    </div>
+    <p class="text-xs text-gray-400">
+        When ON, each email may complete this challenge only <b>once per calendar day</b> — it can play again the next day.
+        This <b>overrides</b> the lifetime Max Attempts and Retry Next Day settings above.
+    </p>
+</div>
+
 {{-- Geofence section — both steps (checkbox + rule) must be completed for enforcement to work --}}
 <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3" id="geofence-box">
     <div class="flex items-start justify-between">
@@ -106,5 +128,38 @@ function toggleGeofence() {
 (function () {
     const sel = document.getElementById('geofence-rule-select');
     if (sel && document.getElementById('cb-geofence').checked) sel.required = true;
+})();
+
+function toggleUniqueEmail() {
+    const checked = document.getElementById('cb-unique-email').checked;
+    document.getElementById('ue-badge-off').classList.toggle('hidden', checked);
+    document.getElementById('ue-badge-on').classList.toggle('hidden', !checked);
+}
+
+// SweetAlert confirm before activating when another challenge is already active
+(function () {
+    const form = document.getElementById('challenge-form');
+    const statusSel = document.querySelector('select[name="status"]');
+    const activeOtherTitle = @json($activeOther->title ?? null);
+    if (!form || !statusSel || !activeOtherTitle || typeof Swal === 'undefined') return;
+
+    let confirmed = false;
+    form.addEventListener('submit', function (e) {
+        if (confirmed) return;
+        if (statusSel.value !== 'active') return;
+        e.preventDefault();
+        Swal.fire({
+            title: 'End the current challenge?',
+            html: 'Setting this challenge to <b>Active</b> will automatically end the currently active challenge:<br><br><b>"' + activeOtherTitle + '"</b><br><br>Only one challenge can be active at a time.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, activate this one',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d97706',
+            cancelButtonColor: '#6b7280',
+        }).then(function (result) {
+            if (result.isConfirmed) { confirmed = true; form.submit(); }
+        });
+    });
 })();
 </script>

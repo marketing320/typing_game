@@ -15,7 +15,14 @@
                 <span class="w-2 h-2 bg-green-500 animate-pulse inline-block"></span>LIVE
             </span>
         </div>
-        <p class="text-amber-600 text-[10px] mt-1 leading-loose">Top typists ranked by WPM &rarr; Accuracy &rarr; Speed</p>
+        <p class="text-amber-600 text-[10px] mt-1 leading-loose inline-flex items-center gap-1.5 justify-center">
+            Top typists ranked by WPM &rarr; Accuracy &rarr; Speed
+            <button type="button" onclick="document.getElementById('score-info-modal').classList.remove('hidden')"
+                class="inline-flex items-center justify-center w-4 h-4 text-amber-500 hover:text-amber-700 transition-colors align-middle"
+                title="How are points calculated?">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+            </button>
+        </p>
     </div>
 
     @if($activeChallenge)
@@ -82,6 +89,46 @@
         </table>
     </div>
 
+</div>
+
+<!-- Scoring info modal -->
+<div id="score-info-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+    <div class="bg-white max-w-sm w-full pixel-card border-2 border-amber-900" style="box-shadow: 5px 5px 0 #1c0a00;">
+        <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 flex items-center justify-between">
+            <h2 class="text-[11px] font-bold text-white flex items-center gap-2">
+                <i data-lucide="calculator" class="w-4 h-4 text-amber-200"></i> How Points Work
+            </h2>
+            <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
+                class="text-amber-300 hover:text-white">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div class="p-5 space-y-4 text-[10px] text-amber-800 leading-loose">
+            <div class="bg-amber-50 border-2 border-amber-200 p-3 text-center">
+                <span class="font-bold text-amber-900">Score = WPM × Accuracy ÷ 100</span>
+            </div>
+            <div>
+                <p class="font-bold text-amber-900 mb-1">WPM (Words Per Minute)</p>
+                <p>Your correct characters ÷ 5, measured per minute. Only correct characters count.</p>
+            </div>
+            <div>
+                <p class="font-bold text-amber-900 mb-1">Accuracy</p>
+                <p>Correct characters ÷ total characters, shown as a percentage.</p>
+            </div>
+            <div>
+                <p class="font-bold text-amber-900 mb-1">Ranking order</p>
+                <p>Highest WPM first &rarr; then Accuracy &rarr; then fastest time. Exact ties share the same rank.</p>
+            </div>
+            <p class="text-amber-500">Tip: backspace is disabled, so accuracy is king. Type carefully! 🐵</p>
+        </div>
+        <div class="px-5 pb-5">
+            <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
+                class="w-full bg-amber-700 text-white text-[10px] font-bold py-3 pixel-btn hover:bg-amber-800 transition-colors"
+                style="box-shadow: 3px 3px 0 #1c0a00; border-color: #451a03;">
+                Got it!
+            </button>
+        </div>
+    </div>
 </div>
 @endsection
 

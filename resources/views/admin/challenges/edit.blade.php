@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-2xl">
-<form method="POST" action="{{ route('admin.challenges.update', $challenge) }}" class="bg-white rounded-xl shadow border border-gray-100 p-6 space-y-4">
+<form id="challenge-form" method="POST" action="{{ route('admin.challenges.update', $challenge) }}" class="bg-white rounded-xl shadow border border-gray-100 p-6 space-y-4">
     @csrf @method('PUT')
     @include('admin.challenges._form', ['challenge' => $challenge])
     <div class="flex gap-3 pt-2">

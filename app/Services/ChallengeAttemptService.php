@@ -20,6 +20,26 @@ class ChallengeAttemptService
             return ['allowed' => false, 'reason' => 'This challenge is not currently active.'];
         }
 
+        // Unique-email mode (dominant): exactly one completed entry per email per
+        // calendar day. Ignores the lifetime cap and resets at midnight.
+        if ($challenge->require_unique_email) {
+            $completedToday = ChallengeAttempt::where('player_id', $player->id)
+                ->where('challenge_id', $challenge->id)
+                ->where('status', 'completed')
+                ->whereDate('completed_at', today())
+                ->exists();
+
+            if ($completedToday) {
+                return [
+                    'allowed' => false,
+                    'reason'  => 'This email has already been used for today\'s challenge. Come back tomorrow for another shot!',
+                    'code'    => 'email_used_today',
+                ];
+            }
+
+            return ['allowed' => true];
+        }
+
         $totalAttempts = ChallengeAttempt::where('player_id', $player->id)
             ->where('challenge_id', $challenge->id)
             ->count();

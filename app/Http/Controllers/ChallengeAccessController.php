@@ -7,6 +7,7 @@ use App\Models\TypingChallenge;
 use App\Services\GeofenceService;
 use App\Services\OtpService;
 use App\Services\MailerService;
+use App\Services\ChallengeAttemptService;
 use Illuminate\Http\Request;
 
 class ChallengeAccessController extends Controller
@@ -15,6 +16,7 @@ class ChallengeAccessController extends Controller
         private GeofenceService $geofence,
         private OtpService $otp,
         private MailerService $mailer,
+        private ChallengeAttemptService $attempts,
     ) {}
 
     public function access()
@@ -74,6 +76,21 @@ class ChallengeAccessController extends Controller
 
         if ($player->is_blocked) {
             return response()->json(['success' => false, 'message' => 'Your account is not eligible for this challenge.'], 403);
+        }
+
+        // Eligibility pre-check — don't email an OTP to someone who can't play.
+        // For unique-email challenges this returns code 'email_used_today' so the
+        // frontend can show the dedicated modal.
+        $challenge = TypingChallenge::where('status', 'active')->latest()->first();
+        if ($challenge) {
+            $canAttempt = $this->attempts->canAttempt($player, $challenge);
+            if (!$canAttempt['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $canAttempt['reason'],
+                    'code'    => $canAttempt['code'] ?? null,
+                ], 403);
+            }
         }
 
         $otpRecord = $this->otp->generate($email, 'challenge_access', $request->ip(), $request->userAgent());
