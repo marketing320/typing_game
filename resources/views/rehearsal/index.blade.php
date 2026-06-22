@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Rehearsal Mode')
+@section('title', 'Practice Mode')
 
 @section('content')
 <div class="max-w-3xl mx-auto px-4 py-8">
     <div class="flex items-center justify-center gap-3 mb-4">
         <i data-lucide="target" class="w-6 h-6 text-amber-700"></i>
-        <h1 class="text-sm font-bold text-amber-900">Rehearsal Mode</h1>
+        <h1 class="text-sm font-bold text-amber-900">Practice Mode</h1>
     </div>
-    <p class="text-center text-amber-600 text-[10px] mb-6 leading-loose">Practice as much as you want. No limits.</p>
+    <p class="text-center text-amber-600 text-[10px] mb-6 leading-loose">Practise freely. No registration needed.</p>
 
     @if (!$text)
-        <div class="text-center text-amber-700 text-xs py-12">No rehearsal text available yet. Check back soon!</div>
+        <div class="text-center text-amber-700 text-xs py-12">No practice text available yet. Check back soon!</div>
     @else
 
     <!-- Rules modal -->

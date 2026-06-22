@@ -37,7 +37,7 @@
                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-100"><i data-lucide="minus" class="w-3 h-3 text-gray-400"></i></span>
                     @endif
                 </td>
-                <td class="px-4 py-3 text-xs text-gray-400">{{ Str::limit($t->challenge?->title ?? 'Rehearsal', 30) }}</td>
+                <td class="px-4 py-3 text-xs text-gray-400">{{ Str::limit($t->challenge?->title ?? 'Practice', 30) }}</td>
                 <td class="px-4 py-3 text-center">
                     <div class="flex gap-2 justify-center">
                         <a href="{{ route('admin.typing-texts.edit', $t) }}" class="text-blue-500 hover:underline text-xs">Edit</a>

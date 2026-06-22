@@ -547,6 +547,11 @@ document.getElementById('hidden-input').addEventListener('input', function(e) {
     }
 });
 
+// Enforce "no copy/paste or auto-typing" — block paste & drop on the typing field.
+['paste', 'drop'].forEach(evt =>
+    document.getElementById('hidden-input').addEventListener(evt, e => e.preventDefault())
+);
+
 async function submitResult() {
     completed = true;
     clearInterval(timerInterval);

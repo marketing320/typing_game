@@ -54,7 +54,7 @@
         </a>
         <div class="flex gap-5 text-[10px]">
             <a href="{{ route('rehearsal.index') }}" class="flex items-center gap-1.5 hover:text-amber-300 transition">
-                <i data-lucide="target" class="w-4 h-4"></i><span class="hidden sm:inline">Rehearsal</span>
+                <i data-lucide="target" class="w-4 h-4"></i><span class="hidden sm:inline">Practice</span>
             </a>
             <a href="{{ route('challenge.access') }}" class="flex items-center gap-1.5 hover:text-amber-300 transition">
                 <i data-lucide="trophy" class="w-4 h-4"></i><span class="hidden sm:inline">Challenge</span>

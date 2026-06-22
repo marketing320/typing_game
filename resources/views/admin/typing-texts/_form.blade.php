@@ -8,7 +8,7 @@
     <div>
         <label class="block text-sm font-semibold text-gray-700 mb-1">Mode *</label>
         <select name="mode" id="text-mode" onchange="toggleChallengeRequired()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
-            <option value="rehearsal" {{ old('mode', $typingText?->mode) === 'rehearsal' ? 'selected' : '' }}>Rehearsal</option>
+            <option value="rehearsal" {{ old('mode', $typingText?->mode) === 'rehearsal' ? 'selected' : '' }}>Practice</option>
             <option value="challenge" {{ old('mode', $typingText?->mode) === 'challenge' ? 'selected' : '' }}>Challenge</option>
         </select>
     </div>
@@ -18,7 +18,7 @@
             <span id="challenge-required-badge" class="{{ old('mode', $typingText?->mode) === 'challenge' ? '' : 'hidden' }} text-red-500">*</span>
         </label>
         <select name="challenge_id" id="challenge-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
-            <option value="">— None (Rehearsal only) —</option>
+            <option value="">— None (Practice only) —</option>
             @foreach($challenges as $c)
             <option value="{{ $c->id }}" {{ old('challenge_id', $typingText?->challenge_id) == $c->id ? 'selected' : '' }}>{{ $c->title }}</option>
             @endforeach

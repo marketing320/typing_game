@@ -12,6 +12,23 @@
         <p class="text-amber-600 text-[10px] mt-3 leading-loose">One shot at the top. Make it count.</p>
     </div>
 
+    <!-- Before you start -->
+    <div class="bg-white pixel-card p-5 mb-6">
+        <h2 class="text-[11px] font-bold text-amber-900 mb-4 flex items-center gap-2">
+            <i data-lucide="scroll-text" class="w-4 h-4 text-amber-700"></i> Before You Start
+        </h2>
+        <ul class="space-y-2.5 mb-4">
+            <li class="flex items-start gap-2 text-[10px] text-amber-800 leading-loose"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i> One official attempt only</li>
+            <li class="flex items-start gap-2 text-[10px] text-amber-800 leading-loose"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i> Type as fast and accurately as possible</li>
+            <li class="flex items-start gap-2 text-[10px] text-amber-800 leading-loose"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i> Your score depends on WPM and accuracy</li>
+            <li class="flex items-start gap-2 text-[10px] text-amber-800 leading-loose"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i> Your username will appear on the leaderboard</li>
+            <li class="flex items-start gap-2 text-[10px] text-amber-800 leading-loose"><i data-lucide="x" class="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5"></i> Copy/paste or auto-typing is not allowed</li>
+        </ul>
+        <div class="bg-amber-50 border-2 border-amber-200 px-3 py-2.5 text-[10px] text-amber-700 leading-loose">
+            <strong class="text-amber-900">How scoring works:</strong> Your final score is based on typing speed and accuracy. Typing fast helps, but mistakes will reduce your result. Remember no Backspacing allowed!
+        </div>
+    </div>
+
     <!-- Geolocation status -->
     <div id="geo-status" class="mb-6 hidden">
         <div id="geo-checking" class="bg-blue-50 border-2 border-blue-200 px-4 py-3 text-[10px] text-blue-700 flex items-center gap-2">
@@ -40,13 +57,15 @@
         <form id="access-form" class="space-y-5">
             @csrf
             <div>
-                <label class="block text-[10px] font-bold text-amber-800 mb-2">Email Address</label>
+                <label class="block text-[10px] font-bold text-amber-800 mb-1.5">Email Address</label>
+                <p class="text-[10px] text-amber-500 mb-2 leading-loose">We'll send your verification code here. Your email will not be shown publicly.</p>
                 <input type="email" id="input-email" name="email" required
                     class="w-full border-2 border-amber-300 px-4 py-3 focus:outline-none focus:border-amber-600 text-xs font-[inherit] bg-amber-50"
                     placeholder="your@email.com">
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-amber-800 mb-2">Username</label>
+                <label class="block text-[10px] font-bold text-amber-800 mb-1.5">Username</label>
+                <p class="text-[10px] text-amber-500 mb-2 leading-loose">This name will appear on the leaderboard.</p>
                 <input type="text" id="input-username" name="username" required maxlength="64"
                     class="w-full border-2 border-amber-300 px-4 py-3 focus:outline-none focus:border-amber-600 text-xs font-[inherit] bg-amber-50"
                     placeholder="MonkeyTyper99">
@@ -67,6 +86,12 @@
         <i data-lucide="mail" class="w-3.5 h-3.5"></i>
         You will receive a one-time password via email to verify your identity.
     </p>
+    @if($requireGeofence)
+    <p class="text-center text-[10px] text-amber-500 mt-3 flex items-start justify-center gap-1.5 leading-loose">
+        <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+        Location access is only used to confirm you are inside the official challenge area. Your location will not be displayed publicly.
+    </p>
+    @endif
 </div>
 
 <!-- Geo block modal -->
@@ -78,7 +103,7 @@
         <h2 class="text-xs font-bold text-red-700 mb-3">Outside Challenge Area</h2>
         <p id="modal-message" class="text-gray-600 text-[10px] mb-6 leading-loose">You are outside the allowed event area.</p>
         <a href="{{ route('rehearsal.index') }}" class="flex items-center justify-center gap-2 bg-amber-100 text-amber-800 text-[10px] font-bold py-3 pixel-btn hover:bg-amber-200 transition-colors">
-            Try Rehearsal Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            Try Practice Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
     </div>
 </div>
@@ -96,7 +121,7 @@
                 See the Leaderboard <i data-lucide="award" class="w-4 h-4"></i>
             </a>
             <a href="{{ route('rehearsal.index') }}" class="flex items-center justify-center gap-2 bg-amber-100 text-amber-800 text-[10px] font-bold py-3 pixel-btn hover:bg-amber-200 transition-colors">
-                Try Rehearsal Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                Try Practice Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
             <button type="button" onclick="document.getElementById('email-modal').classList.add('hidden')" class="w-full text-amber-500 text-[10px] py-2 hover:text-amber-700 transition-colors">
                 Use a different email
