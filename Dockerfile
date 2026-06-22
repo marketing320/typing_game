@@ -39,6 +39,12 @@ RUN apk add --no-cache \
         pcntl \
         exif
 
+# PHP Redis extension (powers cache + sessions)
+RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
+    && printf "no\nno\nno\nno\n" | pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del .phpize-deps
+
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 

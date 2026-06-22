@@ -37,7 +37,14 @@ Route::prefix('challenge')->name('challenge.')->group(function () {
 });
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
-Route::get('/leaderboard/data', [LeaderboardController::class, 'data'])->name('leaderboard.data');
+// High-frequency poll endpoint — stateless JSON, so skip session/cookie middleware.
+Route::get('/leaderboard/data', [LeaderboardController::class, 'data'])
+    ->name('leaderboard.data')
+    ->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+    ]);
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {

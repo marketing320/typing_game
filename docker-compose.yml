@@ -17,7 +17,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: '1.0'
           memory: 1G
         reservations:
           cpus: '0.1'
@@ -29,6 +29,29 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+
+  # Redis — cache + sessions
+  tmg_redis:
+    image: redis:7-alpine
+    container_name: tmg_redis
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru", "--save", ""]
+    networks:
+      - tmg_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 320M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
   # Laravel web (Nginx + PHP-FPM)
   tmg_app:
@@ -45,17 +68,24 @@ services:
     environment:
       DB_HOST: tmg_db
       DB_PORT: 3306
+      REDIS_HOST: tmg_redis
+      REDIS_PORT: 6379
+      REDIS_CLIENT: phpredis
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
     volumes:
       - tmg_storage:/var/www/html/storage/app
       - tmg_logs:/var/www/html/storage/logs
     depends_on:
       tmg_db:
         condition: service_healthy
+      tmg_redis:
+        condition: service_healthy
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 1G
+          cpus: '2.0'
+          memory: 2G
         reservations:
           cpus: '0.25'
           memory: 256M
@@ -81,11 +111,18 @@ services:
     environment:
       DB_HOST: tmg_db
       DB_PORT: 3306
+      REDIS_HOST: tmg_redis
+      REDIS_PORT: 6379
+      REDIS_CLIENT: phpredis
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
     volumes:
       - tmg_storage:/var/www/html/storage/app
       - tmg_logs:/var/www/html/storage/logs
     depends_on:
       tmg_db:
+        condition: service_healthy
+      tmg_redis:
         condition: service_healthy
       tmg_app:
         condition: service_healthy

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TypingChallenge;
 use App\Services\LeaderboardService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class LeaderboardController extends Controller
 {
@@ -19,9 +20,7 @@ class LeaderboardController extends Controller
         $activeChallenge = $challenges->where('status', 'active')->first()
             ?? $challenges->first();
 
-        $entries = $activeChallenge
-            ? $this->leaderboard->getForChallenge($activeChallenge)
-            : collect();
+        $entries = $this->cachedEntries($activeChallenge);
 
         return view('leaderboard.index', compact('entries', 'challenges', 'activeChallenge'));
     }
@@ -35,9 +34,7 @@ class LeaderboardController extends Controller
         $activeChallenge = $challenges->where('status', 'active')->first()
             ?? $challenges->first();
 
-        $entries = $activeChallenge
-            ? $this->leaderboard->getForChallenge($activeChallenge)
-            : collect();
+        $entries = $this->cachedEntries($activeChallenge);
 
         return response()->json([
             'entries'   => $entries->values(),
@@ -46,5 +43,22 @@ class LeaderboardController extends Controller
                 'status' => $activeChallenge->status,
             ] : null,
         ]);
+    }
+
+    /**
+     * Ranked leaderboard entries, cached for a few seconds so the high-frequency
+     * poll endpoint doesn't recompute the JOIN + ranking on every request.
+     */
+    private function cachedEntries(?TypingChallenge $challenge)
+    {
+        if (!$challenge) {
+            return collect();
+        }
+
+        return Cache::remember(
+            "leaderboard:challenge:{$challenge->id}",
+            3,
+            fn () => $this->leaderboard->getForChallenge($challenge)->values()
+        );
     }
 }
