@@ -14,6 +14,8 @@ class AdminSettingController extends Controller
         'otp_max_attempts' => 'OTP Max Attempts',
         'maintenance_mode' => 'Maintenance Mode',
         'referral_source_options' => 'Referral Source Options',
+        'mobile_block_enabled' => 'Block Mobile Devices',
+        'mobile_block_message' => 'Mobile Block Message',
     ];
 
     public function index()
@@ -28,7 +30,7 @@ class AdminSettingController extends Controller
     {
         $request->validate([
             'settings' => 'required|array',
-            'settings.*' => 'nullable|string|max:500',
+            'settings.*' => 'nullable|string|max:2000',
         ]);
 
         foreach ($request->input('settings', []) as $key => $value) {

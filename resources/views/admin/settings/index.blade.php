@@ -27,6 +27,28 @@
         <p class="text-xs text-gray-400 mt-1">Comma-separated. These appear as radio options in the pre-game form on /challenge/play.</p>
     </div>
 
+    @php
+        $mobileEnabled = old('settings.mobile_block_enabled', $settings['mobile_block_enabled']?->setting_value ?? '1');
+        $mobileMessage = old('settings.mobile_block_message', $settings['mobile_block_message']?->setting_value
+            ?? 'This challenge can only be played on our official Brightstar Computer display PC setup. Please come to our booth at Plaza Lowyat Ground Floor and use the computer provided to take part. Please ask our staff for assistance if you need some.  ^w^');
+    @endphp
+
+    <div class="border-t border-gray-100 pt-4">
+        <label class="flex items-center gap-2.5 cursor-pointer mb-1">
+            {{-- hidden 0 ensures an unchecked box still submits a value --}}
+            <input type="hidden" name="settings[mobile_block_enabled]" value="0">
+            <input type="checkbox" name="settings[mobile_block_enabled]" value="1"
+                {{ $mobileEnabled === '1' ? 'checked' : '' }} class="rounded">
+            <span class="text-sm font-semibold text-gray-700">Block Mobile Devices</span>
+        </label>
+        <p class="text-xs text-gray-400 mb-3">When on, phones &amp; tablets are blocked from the challenge flow and shown the message below. Practice &amp; leaderboard stay open on mobile.</p>
+
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Mobile Block Message</label>
+        <textarea name="settings[mobile_block_message]" rows="4"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 resize-y">{{ $mobileMessage }}</textarea>
+        <p class="text-xs text-gray-400 mt-1">Shown on the blocked page. Line breaks are preserved.</p>
+    </div>
+
     <button type="submit" class="bg-gray-900 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-gray-700 transition">Save Settings</button>
 </form>
 </div>

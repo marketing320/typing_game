@@ -23,7 +23,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/rehearsal', [RehearsalController::class, 'index'])->name('rehearsal.index');
 Route::post('/rehearsal/submit', [RehearsalController::class, 'submit'])->name('rehearsal.submit');
 
-Route::prefix('challenge')->name('challenge.')->group(function () {
+Route::prefix('challenge')->name('challenge.')->middleware('block.mobile')->group(function () {
     Route::get('/access', [ChallengeAccessController::class, 'access'])->name('access');
     Route::post('/check-location', [ChallengeAccessController::class, 'checkLocation'])->name('check-location');
     Route::post('/request-otp', [ChallengeAccessController::class, 'requestOtp'])->name('request-otp');
