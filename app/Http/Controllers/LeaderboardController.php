@@ -55,10 +55,20 @@ class LeaderboardController extends Controller
             return collect();
         }
 
-        return Cache::remember(
+        // Cache a plain scalar array (not a Collection/objects) so Redis
+        // serialization round-trips cleanly. Rebuild a Collection for the views.
+        $rows = Cache::remember(
             "leaderboard:challenge:{$challenge->id}",
             3,
-            fn () => $this->leaderboard->getForChallenge($challenge)->values()
+            fn () => $this->leaderboard->getForChallenge($challenge)
+                ->map(function ($e) {
+                    $e['completed_at'] = isset($e['completed_at']) ? (string) $e['completed_at'] : null;
+                    return $e;
+                })
+                ->values()
+                ->all()
         );
+
+        return collect($rows);
     }
 }
