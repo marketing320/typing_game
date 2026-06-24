@@ -14,14 +14,14 @@
             <span class="inline-flex items-center gap-1.5 text-[10px] text-green-600 font-bold">
                 <span class="w-2 h-2 bg-green-500 animate-pulse inline-block"></span>LIVE
             </span>
-        </div>
-        <p class="text-amber-600 text-[10px] mt-1 leading-loose inline-flex items-center gap-1.5 justify-center">
-            Ranked by Score (WPM &times; Accuracy)
             <button type="button" onclick="document.getElementById('score-info-modal').classList.remove('hidden')"
                 class="inline-flex items-center justify-center w-4 h-4 text-amber-500 hover:text-amber-700 transition-colors align-middle"
                 title="How are points calculated?">
                 <i data-lucide="info" class="w-3.5 h-3.5"></i>
             </button>
+        </div>
+        <p class="text-amber-600 text-[10px] mt-1 leading-loose inline-flex items-center gap-1.5 justify-center">
+            
         </p>
     </div>
 
