@@ -14,7 +14,7 @@ class LeaderboardService
             ->where('challenge_id', $challenge->id)
             ->where('status', 'completed')
             ->whereHas('player')
-            ->orderByDesc('wpm')
+            ->orderByRaw('(wpm * accuracy) DESC')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')
             ->limit($limit)
@@ -35,7 +35,7 @@ class LeaderboardService
         $attempts = ChallengeAttempt::with(['player', 'challenge'])
             ->where('status', 'completed')
             ->whereHas('player')
-            ->orderByDesc('wpm')
+            ->orderByRaw('(wpm * accuracy) DESC')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')
             ->limit($limit)
@@ -54,7 +54,7 @@ class LeaderboardService
 
     /**
      * Assign Olympic-style ranks (1-2-2-4) to a sorted collection of attempts.
-     * Players with identical WPM, accuracy, and duration share the same rank.
+     * Players with identical score, accuracy, and duration share the same rank.
      * The next distinct player's rank equals their 1-based position in the list.
      */
     private function rankAttempts(Collection $attempts, callable $mapper): Collection
@@ -65,7 +65,7 @@ class LeaderboardService
 
         foreach ($attempts as $index => $attempt) {
             if ($prev !== null
-                && $attempt->wpm              == $prev->wpm
+                && round($attempt->wpm * $attempt->accuracy / 100, 2) == round($prev->wpm * $prev->accuracy / 100, 2)
                 && $attempt->accuracy         == $prev->accuracy
                 && $attempt->duration_seconds == $prev->duration_seconds
             ) {

@@ -16,7 +16,7 @@
             </span>
         </div>
         <p class="text-amber-600 text-[10px] mt-1 leading-loose inline-flex items-center gap-1.5 justify-center">
-            Top typists ranked by WPM &rarr; Accuracy &rarr; Speed
+            Ranked by Score (WPM &times; Accuracy)
             <button type="button" onclick="document.getElementById('score-info-modal').classList.remove('hidden')"
                 class="inline-flex items-center justify-center w-4 h-4 text-amber-500 hover:text-amber-700 transition-colors align-middle"
                 title="How are points calculated?">
@@ -117,7 +117,7 @@
             </div>
             <div>
                 <p class="font-bold text-amber-900 mb-1">Ranking order</p>
-                <p>Highest WPM first &rarr; then Accuracy &rarr; then fastest time. Exact ties share the same rank.</p>
+                <p>Highest Score first &rarr; then Accuracy &rarr; then fastest time. Exact ties share the same rank.</p>
             </div>
             <p class="text-amber-500">Tip: backspace is disabled, so accuracy is king. Type carefully! 🐵</p>
         </div>
