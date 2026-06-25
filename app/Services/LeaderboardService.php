@@ -17,8 +17,11 @@ class LeaderboardService
             ->orderByRaw('(wpm * accuracy) DESC')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')
-            ->limit($limit)
-            ->get();
+            ->get()
+            // One row per email — keep each player's best attempt (first in score order).
+            ->unique(fn ($attempt) => $attempt->player->email)
+            ->take($limit)
+            ->values();
 
         return $this->rankAttempts($attempts, fn($attempt) => [
             'username'         => $attempt->player->username,
@@ -38,8 +41,11 @@ class LeaderboardService
             ->orderByRaw('(wpm * accuracy) DESC')
             ->orderByDesc('accuracy')
             ->orderBy('duration_seconds')
-            ->limit($limit)
-            ->get();
+            ->get()
+            // One row per email — keep each player's best attempt (first in score order).
+            ->unique(fn ($attempt) => $attempt->player->email)
+            ->take($limit)
+            ->values();
 
         return $this->rankAttempts($attempts, fn($attempt) => [
             'username'         => $attempt->player->username,
