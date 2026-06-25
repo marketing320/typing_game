@@ -50,7 +50,7 @@
     </div>
 
     {{-- Table (shown when entries exist) --}}
-    <div id="table-wrap" class="{{ $entries->isEmpty() ? 'hidden' : '' }} bg-white pixel-card overflow-hidden">
+    <div id="table-wrap" class="{{ $entries->isEmpty() ? 'hidden' : '' }} bg-white pixel-card overflow-x-auto">
         <table class="w-full text-[10px]">
             <thead class="bg-amber-800 text-amber-100 border-b-2 border-amber-950">
                 <tr>
@@ -78,7 +78,7 @@
                             <span class="text-gray-400">#{{ $entry['rank'] }}</span>
                         @endif
                     </td>
-                    <td class="px-4 py-3 font-bold">{{ $entry['username'] }}</td>
+                    <td class="px-4 py-3 font-bold break-all max-w-[160px]">{{ $entry['username'] }}</td>
                     <td class="px-4 py-3 text-right font-bold text-amber-700">{{ number_format($entry['score'], 2) }}</td>
                     <td class="px-4 py-3 text-right font-bold text-blue-600">{{ $entry['wpm'] }}</td>
                     <td class="px-4 py-3 text-right text-green-600 hidden sm:table-cell">{{ number_format($entry['accuracy'], 1) }}%</td>
@@ -164,7 +164,7 @@ function rankBadge(rank) {
 function buildRow(e) {
     return `<tr class="hover:bg-amber-50 transition-colors" data-username="${escapeHtml(e.username)}" data-rank="${e.rank}">
         <td class="px-4 py-3 font-bold">${rankBadge(e.rank)}</td>
-        <td class="px-4 py-3 font-bold">${escapeHtml(e.username)}</td>
+        <td class="px-4 py-3 font-bold break-all max-w-[160px]">${escapeHtml(e.username)}</td>
         <td class="px-4 py-3 text-right font-bold text-amber-700">${fmt(e.score, 2)}</td>
         <td class="px-4 py-3 text-right font-bold text-blue-600">${e.wpm}</td>
         <td class="px-4 py-3 text-right text-green-600 hidden sm:table-cell">${fmt(e.accuracy, 1)}%</td>
