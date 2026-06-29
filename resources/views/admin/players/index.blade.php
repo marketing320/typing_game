@@ -77,12 +77,26 @@
                 <th class="px-4 py-3 text-left">Email</th>
                 <th class="px-4 py-3 text-center">Verified</th>
                 <th class="px-4 py-3 text-center">Attempts</th>
+                <th class="px-4 py-3 text-center">
+                    <a href="{{ route('admin.players.index', array_filter(['search' => request('search'), 'dir' => $dir === 'asc' ? 'desc' : 'asc'])) }}"
+                       class="inline-flex items-center justify-center gap-1 hover:text-gray-600" title="Sort by ranking">
+                        Ranking
+                        <i data-lucide="{{ $dir === 'asc' ? 'arrow-up' : 'arrow-down' }}" class="w-3 h-3"></i>
+                    </a>
+                </th>
                 <th class="px-4 py-3 text-center">Blocked</th>
+                <th class="px-4 py-3 text-center">WhatsApp</th>
                 <th class="px-4 py-3 text-center">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
             @forelse($players as $p)
+            @php
+                $dispPhone = $p->phone ?? '';
+                $waPhone   = preg_replace('/\D+/', '', $dispPhone);
+                $waLink    = $waPhone !== '' ? 'https://wa.me/' . $waPhone : '';
+                $rank      = $rankMap[$p->id] ?? null;
+            @endphp
             <tr class="hover:bg-gray-50 {{ $p->is_blocked ? 'opacity-50' : '' }}" data-id="{{ $p->id }}">
                 <td class="px-4 py-3">
                     <input type="checkbox" class="player-checkbox rounded cursor-pointer" value="{{ $p->id }}">
@@ -106,8 +120,27 @@
                 </td>
                 <td class="px-4 py-3 text-center">{{ $p->challenge_attempts_count }}</td>
                 <td class="px-4 py-3 text-center">
+                    @if($rank)
+                        <span class="font-bold text-amber-700">#{{ $rank }}</span>
+                    @else
+                        <span class="text-gray-300">—</span>
+                    @endif
+                </td>
+                <td class="px-4 py-3 text-center">
                     @if($p->is_blocked)
                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-100"><i data-lucide="ban" class="w-3 h-3 text-red-500"></i></span>
+                    @else
+                        <span class="text-gray-300">—</span>
+                    @endif
+                </td>
+                <td class="px-4 py-3 text-center">
+                    @if($dispPhone)
+                        <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer"
+                           class="text-green-500 hover:text-green-600 transition-colors inline-flex" title="WhatsApp {{ $dispPhone }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+                            </svg>
+                        </a>
                     @else
                         <span class="text-gray-300">—</span>
                     @endif
@@ -136,7 +169,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-300">No players yet.</td></tr>
+            <tr><td colspan="9" class="px-4 py-8 text-center text-gray-300">No players yet.</td></tr>
             @endforelse
         </tbody>
     </table>
