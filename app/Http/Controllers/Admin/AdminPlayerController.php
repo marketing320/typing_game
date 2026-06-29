@@ -10,18 +10,24 @@ class AdminPlayerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Player::withCount('challengeAttempts');
+        $players = $this->applySearch(
+            Player::withCount('challengeAttempts'),
+            $request->input('search')
+        )->latest()->paginate(20)->withQueryString();
 
-        if ($search = $request->input('search')) {
+        return view('admin.players.index', compact('players'));
+    }
+
+    private function applySearch($query, ?string $search)
+    {
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('username', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
-        $players = $query->latest()->paginate(20);
-
-        return view('admin.players.index', compact('players'));
+        return $query;
     }
 
     public function show(Player $player)
@@ -95,16 +101,20 @@ class AdminPlayerController extends Controller
 
     public function bulkExport(Request $request)
     {
-        $ids = array_filter((array) $request->input('ids', []));
+        $query = Player::withCount('challengeAttempts');
 
-        if (empty($ids)) {
-            return back()->with('error', 'No players selected.');
+        if ($request->boolean('select_all')) {
+            // Whole dataset, respecting the current search filter.
+            $this->applySearch($query, $request->input('search'));
+        } else {
+            $ids = array_filter((array) $request->input('ids', []));
+            if (empty($ids)) {
+                return back()->with('error', 'No players selected.');
+            }
+            $query->whereIn('id', $ids);
         }
 
-        $players = Player::withCount('challengeAttempts')
-            ->whereIn('id', $ids)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query->orderBy('created_at', 'desc');
 
         $filename = 'players_' . now()->format('Ymd_His') . '.csv';
 
@@ -115,12 +125,13 @@ class AdminPlayerController extends Controller
             'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
         ];
 
-        $callback = function () use ($players) {
+        $callback = function () use ($query) {
             $out = fopen('php://output', 'w');
             // UTF-8 BOM so Excel opens it correctly
             fputs($out, "\xEF\xBB\xBF");
             fputcsv($out, ['ID', 'Username', 'Full Name', 'Email', 'Phone', 'Referral Source', 'Verified', 'Attempts', 'Blocked', 'Joined']);
-            foreach ($players as $p) {
+            // cursor() streams rows one at a time — safe for exporting the full dataset.
+            foreach ($query->cursor() as $p) {
                 fputcsv($out, [
                     $p->id,
                     $p->username,

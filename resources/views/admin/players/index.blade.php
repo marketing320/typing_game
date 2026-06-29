@@ -14,32 +14,49 @@
 </div>
 
 {{-- Bulk action bar (hidden until rows are selected) --}}
-<div id="bulk-bar" class="hidden mb-3 flex items-center gap-2 bg-gray-900 text-white rounded-lg px-4 py-2.5">
-    <span id="bulk-count" class="text-sm font-semibold mr-3">0 selected</span>
+<div id="bulk-bar" class="hidden mb-3 bg-gray-900 text-white rounded-lg px-4 py-2.5">
+    <div class="flex items-center gap-2 flex-wrap">
+        <span id="bulk-count" class="text-sm font-semibold mr-3">0 selected</span>
 
-    <button type="button"
-        onclick="exportSelected()"
-        class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
-        Export CSV
-    </button>
+        <button type="button" onclick="exportSelected()"
+            class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
+            Export CSV
+        </button>
 
-    <button type="button"
-        onclick="submitBulk('form-bulk-delete', 'Delete {count} selected player(s)?\nThey will be removed from the leaderboard.\nThis can be reversed in the database.')"
-        class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
-        Delete Selected
-    </button>
+        {{-- Delete/Block/Unblock act on ticked rows only (never the whole dataset) --}}
+        <span id="bulk-mutate-actions" class="flex items-center gap-2">
+            <button type="button"
+                onclick="submitBulk('form-bulk-delete', 'Delete {count} selected player(s)?\nThey will be removed from the leaderboard.\nThis can be reversed in the database.')"
+                class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
+                Delete Selected
+            </button>
+            <button type="button"
+                onclick="submitBulk('form-bulk-block', 'Block {count} selected player(s)?')"
+                class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
+                Block Selected
+            </button>
+            <button type="button"
+                onclick="submitBulk('form-bulk-unblock', 'Unblock {count} selected player(s)?')"
+                class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
+                Unblock Selected
+            </button>
+        </span>
 
-    <button type="button"
-        onclick="submitBulk('form-bulk-block', 'Block {count} selected player(s)?')"
-        class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
-        Block Selected
-    </button>
+        <button type="button" id="clear-selection" onclick="clearSelectAllMatching()"
+            class="hidden text-gray-300 hover:text-white text-xs underline ml-1">
+            Clear selection
+        </button>
+    </div>
 
-    <button type="button"
-        onclick="submitBulk('form-bulk-unblock', 'Unblock {count} selected player(s)?')"
-        class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
-        Unblock Selected
-    </button>
+    {{-- "Select all matching" banner — shown once the whole visible page is ticked and more pages exist --}}
+    <div id="select-all-banner" class="hidden mt-2 text-xs text-gray-300">
+        All <span id="page-count"></span> on this page selected.
+        <button type="button" onclick="enableSelectAllMatching()"
+            class="underline font-bold text-blue-300 hover:text-blue-200 ml-1">
+            Select all {{ number_format($players->total()) }} players
+        </button>
+        <span class="text-gray-500">(for export)</span>
+    </div>
 
     {{-- Hidden forms populated by JS before submission --}}
     <form id="form-bulk-delete"   method="POST" action="{{ route('admin.players.bulk-destroy') }}"  class="hidden">@csrf</form>
@@ -132,9 +149,19 @@
 
 @push('scripts')
 <script>
-const selectAllEl  = document.getElementById('select-all');
-const bulkBar      = document.getElementById('bulk-bar');
-const bulkCountEl  = document.getElementById('bulk-count');
+const selectAllEl   = document.getElementById('select-all');
+const bulkBar       = document.getElementById('bulk-bar');
+const bulkCountEl   = document.getElementById('bulk-count');
+const banner        = document.getElementById('select-all-banner');
+const pageCountEl    = document.getElementById('page-count');
+const mutateActions = document.getElementById('bulk-mutate-actions');
+const clearBtn      = document.getElementById('clear-selection');
+
+const TOTAL  = {{ $players->total() }};
+const SEARCH = @json(request('search', ''));
+
+// When true, bulk EXPORT targets the whole filtered dataset, not just ticked rows.
+let selectAllMatching = false;
 
 function getChecked() {
     return Array.from(document.querySelectorAll('.player-checkbox:checked'));
@@ -148,31 +175,71 @@ function syncBulkBar() {
     const checked = getChecked();
     const all     = getAll();
 
+    if (selectAllMatching) {
+        bulkBar.classList.remove('hidden');
+        bulkCountEl.textContent = 'All ' + TOTAL.toLocaleString() + ' players selected';
+        mutateActions.classList.add('hidden');   // delete/block/unblock never run on the whole dataset
+        clearBtn.classList.remove('hidden');
+        banner.classList.add('hidden');
+        selectAllEl.checked = true;
+        selectAllEl.indeterminate = false;
+        return;
+    }
+
     bulkBar.classList.toggle('hidden', checked.length === 0);
     bulkCountEl.textContent = checked.length + ' selected';
+    mutateActions.classList.remove('hidden');
+    clearBtn.classList.add('hidden');
 
     selectAllEl.indeterminate = checked.length > 0 && checked.length < all.length;
     selectAllEl.checked       = all.length > 0 && checked.length === all.length;
+
+    // Offer whole-dataset selection only when the full page is ticked AND more pages exist
+    if (all.length > 0 && checked.length === all.length && TOTAL > all.length) {
+        pageCountEl.textContent = all.length;
+        banner.classList.remove('hidden');
+    } else {
+        banner.classList.add('hidden');
+    }
 }
 
 selectAllEl.addEventListener('change', () => {
+    selectAllMatching = false;
     getAll().forEach(c => c.checked = selectAllEl.checked);
     syncBulkBar();
 });
 
 document.querySelectorAll('.player-checkbox').forEach(c => {
-    c.addEventListener('change', syncBulkBar);
+    c.addEventListener('change', () => { selectAllMatching = false; syncBulkBar(); });
 });
 
+function enableSelectAllMatching() {
+    selectAllMatching = true;
+    syncBulkBar();
+}
+
+function clearSelectAllMatching() {
+    selectAllMatching = false;
+    selectAllEl.checked = false;
+    getAll().forEach(c => c.checked = false);
+    syncBulkBar();
+}
+
+function clearExtra(form) {
+    form.querySelectorAll('input[name="ids[]"], input[name="select_all"], input[name="search"]').forEach(i => i.remove());
+}
+
+function appendHidden(form, name, value) {
+    const input = document.createElement('input');
+    input.type  = 'hidden';
+    input.name  = name;
+    input.value = value;
+    form.appendChild(input);
+}
+
 function injectIds(form) {
-    form.querySelectorAll('input[name="ids[]"]').forEach(i => i.remove());
-    getChecked().forEach(c => {
-        const input = document.createElement('input');
-        input.type  = 'hidden';
-        input.name  = 'ids[]';
-        input.value = c.value;
-        form.appendChild(input);
-    });
+    clearExtra(form);
+    getChecked().forEach(c => appendHidden(form, 'ids[]', c.value));
 }
 
 function submitBulk(formId, confirmTpl) {
@@ -188,10 +255,18 @@ function submitBulk(formId, confirmTpl) {
 }
 
 function exportSelected() {
-    const checked = getChecked();
-    if (checked.length === 0) return;
-
     const form = document.getElementById('form-bulk-export');
+
+    if (selectAllMatching) {
+        if (!confirm('Export all ' + TOTAL.toLocaleString() + ' players' + (SEARCH ? ' matching "' + SEARCH + '"' : '') + '?')) return;
+        clearExtra(form);
+        appendHidden(form, 'select_all', '1');
+        if (SEARCH) appendHidden(form, 'search', SEARCH);
+        form.submit();
+        return;
+    }
+
+    if (getChecked().length === 0) return;
     injectIds(form);
     form.submit();
 }
