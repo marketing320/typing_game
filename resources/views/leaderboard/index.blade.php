@@ -83,13 +83,14 @@
 </div>
 
 <!-- Scoring info modal -->
-<div id="score-info-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+<div id="score-info-modal" role="dialog" aria-modal="true" aria-labelledby="score-modal-title" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
     <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 flex items-center justify-between">
-            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <h2 id="score-modal-title" class="text-sm font-bold text-white flex items-center gap-2">
                 <i data-lucide="calculator" class="w-4 h-4 text-amber-200"></i> How Points Work
             </h2>
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
+                aria-label="Close scoring information"
                 class="text-amber-300 hover:text-white">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>

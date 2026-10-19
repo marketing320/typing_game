@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- Pre-game profile modal --}}
-<div id="profile-modal" class="fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
+<div id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title" class="fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
     <div class="bg-amber-50 max-w-sm w-full ui-card border-2 border-amber-900 my-6">
 
         {{-- Modal header --}}
@@ -13,7 +13,7 @@
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-sm font-bold text-white">Player details</h2>
+            <h2 id="profile-title" class="text-sm font-bold text-white">Player details</h2>
             <p class="text-amber-400 text-sm mt-1 leading-loose">Fill in the required fields before you start.</p>
         </div>
 
@@ -98,13 +98,13 @@
 </div>
 
 {{-- Rules modal (shown after profile, before START) --}}
-<div id="rules-modal" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
+<div id="rules-modal" role="dialog" aria-modal="true" aria-labelledby="challenge-rules-title" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
     <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900 my-6">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 text-center">
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="scroll-text" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-sm font-bold text-white">Challenge rules</h2>
+            <h2 id="challenge-rules-title" class="text-sm font-bold text-white">Challenge rules</h2>
             <p class="text-amber-400 text-sm mt-1 leading-loose">Read these before you start.</p>
         </div>
         <div class="p-5">
@@ -134,7 +134,7 @@
 </div>
 
 {{-- Main game --}}
-<div class="page-shell">
+<div class="page-shell play-screen">
 
     <div class="page-heading">
         <span class="eyebrow"><i data-lucide="zap" class="w-4 h-4" aria-hidden="true"></i> The official challenge</span>
@@ -162,6 +162,8 @@
             <div class="text-sm text-amber-500 mt-1">Time</div>
         </div>
     </div>
+
+    @include('partials.arcade-track')
 
     <!-- Progress bar -->
     <div class="game-progress">
@@ -195,6 +197,7 @@
                 </div>
             </div>
             <div class="px-6 pb-6">
+                <label for="hidden-input" class="typing-input-label"><i data-lucide="keyboard" aria-hidden="true"></i> Type here to play</label>
                 <input id="hidden-input" type="text" aria-label="Type the challenge text here"
                     autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                     class="w-full border-2 border-amber-300 px-4 py-3 text-sm focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"

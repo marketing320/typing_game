@@ -3,7 +3,7 @@
 @section('title', 'Challenge Access')
 
 @section('content')
-<div class="flow-shell">
+<div class="flow-shell challenge-entry-screen">
     <div class="page-heading">
         <span class="eyebrow"><i data-lucide="zap" class="w-4 h-4" aria-hidden="true"></i> Challenge mode</span>
         <h1>Enter the challenge</h1>
@@ -11,6 +11,7 @@
     </div>
     @include('partials.challenge-steps', ['currentStep' => 1])
 
+    <div class="challenge-entry-grid">
     <!-- Before you start -->
     <div class="rules-card ui-card p-5 mb-6">
         <h2 class="text-sm font-bold text-amber-900 mb-4 flex items-center gap-2">
@@ -28,6 +29,7 @@
         </div>
     </div>
 
+    <div class="challenge-entry-panel">
     <!-- Geolocation status -->
     <div id="geo-status" class="mb-6 hidden">
         <div id="geo-checking" class="bg-blue-50 border-2 border-blue-200 px-4 py-3 text-sm text-blue-700 flex items-center gap-2">
@@ -91,15 +93,17 @@
         Location access is only used to confirm you are inside the official challenge area. Your location will not be displayed publicly.
     </p>
     @endif
+    </div>
+    </div>
 </div>
 
 <!-- Geo block modal -->
-<div id="geo-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+<div id="geo-modal" role="dialog" aria-modal="true" aria-labelledby="geo-modal-title" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
     <div class="bg-white p-8 max-w-sm w-full text-center ui-card">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-red-100 border-2 border-red-300 mb-4">
             <i data-lucide="map-pin-off" class="w-7 h-7 text-red-600"></i>
         </div>
-        <h2 class="text-sm font-bold text-red-700 mb-3">Outside Challenge Area</h2>
+        <h2 id="geo-modal-title" class="text-sm font-bold text-red-700 mb-3">Outside Challenge Area</h2>
         <p id="modal-message" class="text-gray-600 text-sm mb-6 leading-loose">You are outside the allowed event area.</p>
         <a href="{{ route('rehearsal.index') }}" class="flex items-center justify-center gap-2 bg-amber-100 text-amber-800 text-sm font-bold py-3 ui-button hover:bg-amber-200 transition-colors">
             Try Practice Mode instead <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -108,12 +112,12 @@
 </div>
 
 <!-- Email already used modal -->
-<div id="email-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+<div id="email-modal" role="dialog" aria-modal="true" aria-labelledby="email-modal-title" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
     <div class="bg-white p-8 max-w-sm w-full text-center ui-card">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
             <i data-lucide="mail-warning" class="w-7 h-7 text-amber-600"></i>
         </div>
-        <h2 class="text-sm font-bold text-amber-800 mb-3">Email Already Used</h2>
+        <h2 id="email-modal-title" class="text-sm font-bold text-amber-800 mb-3">Email Already Used</h2>
         <p id="email-used-message" class="text-gray-600 text-sm mb-6 leading-loose">This email has already been used for today's challenge. You can enter again tomorrow.</p>
         <div class="space-y-2">
             <a href="{{ route('leaderboard.index') }}" class="flex items-center justify-center gap-2 bg-amber-700 text-white text-sm font-bold py-3 ui-button hover:bg-amber-800 transition-colors">

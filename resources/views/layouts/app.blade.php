@@ -42,9 +42,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="game-ui min-h-screen">
+<body class="game-ui arcade-ui min-h-screen {{ request()->routeIs('home') ? 'is-title-screen' : '' }}">
     <a class="skip-link" href="#main-content">Skip to content</a>
 
+    <div class="arcade-surround" aria-hidden="true"><span>WORDSPRINT</span><span>TYPING ARCADE</span></div>
+    <div class="arcade-cabinet" id="arcade-cabinet">
     <header class="site-header">
         <div class="nav-shell">
             <a href="{{ route('home') }}" class="brand" aria-label="{{ config('app.name') }} home">
@@ -62,7 +64,9 @@
                     <i data-lucide="trophy" aria-hidden="true"></i><span>Leaderboard</span>
                 </a>
             </nav>
-            <span class="nav-note"><span class="status-dot"></span>Live</span>
+            <button type="button" class="cabinet-fullscreen" data-fullscreen-toggle hidden aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen">
+                <i data-lucide="maximize" aria-hidden="true"></i><span data-fullscreen-label>Fullscreen</span>
+            </button>
         </div>
     </header>
 
@@ -80,9 +84,11 @@
     </main>
 
     <footer class="site-footer">
-        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i> {{ config('app.name') }} <span>&middot; Typing practice and challenges.</span></p>
-        <a href="{{ route('leaderboard.index') }}">View leaderboard &nearr;</a>
+        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i><span>Type with your keyboard</span></p>
+        <a href="{{ route('home') }}"><i data-lucide="house" aria-hidden="true"></i> Main menu</a>
     </footer>
+    <p class="sr-only" role="status" data-fullscreen-status></p>
+    </div>
 
     @stack('scripts')
     <script>lucide.createIcons();</script>

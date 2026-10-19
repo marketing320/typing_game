@@ -3,7 +3,7 @@
 @section('title', 'Practice Mode')
 
 @section('content')
-<div class="page-shell">
+<div class="page-shell play-screen">
     <div class="page-heading">
         <span class="eyebrow"><i data-lucide="command" class="w-4 h-4" aria-hidden="true"></i> Warm-up</span>
         <h1>Typing practice</h1>
@@ -15,12 +15,12 @@
     @else
 
     <!-- Rules modal -->
-    <div id="rules-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+    <div id="rules-modal" role="dialog" aria-modal="true" aria-labelledby="practice-rules-title" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-8 max-w-sm w-full text-center ui-card border-2 border-amber-900">
             <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
                 <i data-lucide="scroll-text" class="w-7 h-7 text-amber-700"></i>
             </div>
-            <h2 class="text-sm font-bold text-amber-900 mb-4">Before you start</h2>
+            <h2 id="practice-rules-title" class="text-sm font-bold text-amber-900 mb-4">Before you start</h2>
             <ul class="text-left space-y-3 mb-5">
                 <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
@@ -55,6 +55,8 @@
         </div>
     </div>
 
+    @include('partials.arcade-track')
+
     <!-- Typing area -->
     <div class="typing-card ui-card overflow-hidden" id="game-container">
         <div class="typing-toolbar">
@@ -67,6 +69,7 @@
         </div>
 
         <div class="px-6 pb-6">
+            <label for="hidden-input" class="typing-input-label"><i data-lucide="keyboard" aria-hidden="true"></i> Type here to play</label>
             <input
                 id="hidden-input"
                 aria-label="Type the practice text here"
