@@ -11,17 +11,17 @@
             <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-100 border-2 border-amber-400 mb-4 animate-bounce">
                 <i data-lucide="trophy" class="w-8 h-8 text-amber-600"></i>
             </div>
-            <h1>Okay, speed legend.</h1>
+            <h1>Well typed!</h1>
         @elseif($attempt->wpm >= 30)
             <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 border-2 border-green-400 mb-4 animate-bounce">
                 <i data-lucide="star" class="w-8 h-8 text-green-600"></i>
             </div>
-            <h1>You found your flow.</h1>
+            <h1>Challenge complete.</h1>
         @else
             <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 border-2 border-blue-300 mb-4">
                 <i data-lucide="thumbs-up" class="w-8 h-8 text-blue-600"></i>
             </div>
-            <h1>Every round is a level-up.</h1>
+            <h1>Thanks for playing.</h1>
         @endif
         <p class="text-amber-600 text-sm mt-3 leading-loose">{{ $attempt->player->username }} &middot; {{ $attempt->challenge->title }}</p>
     </div>

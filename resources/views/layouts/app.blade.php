@@ -9,7 +9,7 @@
     <title>@yield('title', config('app.name')) | {{ config('app.name') }}</title>
 
     {{-- Core SEO --}}
-    <meta name="description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta name="description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <link rel="canonical" href="{{ request()->url() }}">
 
@@ -17,7 +17,7 @@
     <meta property="og:type"        content="@yield('og_type', 'website')">
     <meta property="og:site_name"   content="{{ config('app.name') }}">
     <meta property="og:title"       content="@yield('title', config('app.name')) | {{ config('app.name') }}">
-    <meta property="og:description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta property="og:description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     <meta property="og:url"         content="{{ request()->url() }}">
     @hasSection('og_image')
     <meta property="og:image"       content="@yield('og_image')">
@@ -27,7 +27,7 @@
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="@yield('twitter_card', 'summary')">
     <meta name="twitter:title"       content="@yield('title', config('app.name')) | {{ config('app.name') }}">
-    <meta name="twitter:description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     @hasSection('og_image')
     <meta name="twitter:image"       content="@yield('og_image')">
     @endif
@@ -80,8 +80,8 @@
     </main>
 
     <footer class="site-footer">
-        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i> {{ config('app.name') }} <span>&middot; A little practice. A lot of potential.</span></p>
-        <a href="{{ route('leaderboard.index') }}">See who's setting the pace &nearr;</a>
+        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i> {{ config('app.name') }} <span>&middot; Typing practice and challenges.</span></p>
+        <a href="{{ route('leaderboard.index') }}">View leaderboard &nearr;</a>
     </footer>
 
     @stack('scripts')

@@ -8,7 +8,7 @@
     <div class="bg-white ui-card p-8 text-center">
         <img src="{{ asset('img/Desk-Typing-1.webp') }}" alt="Our official PC typing setup"
              class="w-full max-w-xs mx-auto mb-6 border-2 border-amber-900 ui-card" width="320" loading="lazy">
-        <div class="page-heading"><span class="eyebrow">Save this one for your keyboard</span><h1>Big keyboard energy.</h1><p>The official challenge needs a desktop.</p></div>
+        <div class="page-heading"><span class="eyebrow">Challenge access</span><h1>Use the event PC</h1><p>You can still practice and view the leaderboard here.</p></div>
         <p class="text-amber-700 text-sm leading-loose mb-6">{!! nl2br(e($message)) !!}</p>
 
         <div class="space-y-2">

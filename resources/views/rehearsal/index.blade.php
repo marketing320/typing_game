@@ -5,13 +5,13 @@
 @section('content')
 <div class="page-shell">
     <div class="page-heading">
-        <span class="eyebrow"><i data-lucide="command" class="w-4 h-4" aria-hidden="true"></i> The warm-up zone</span>
-        <h1>Your pace. Your practice.</h1>
-        <p>No sign-up. No pressure. Just a little better with every round.</p>
+        <span class="eyebrow"><i data-lucide="command" class="w-4 h-4" aria-hidden="true"></i> Warm-up</span>
+        <h1>Typing practice</h1>
+        <p>Type a short text to check your speed and accuracy. You can practice as often as you like.</p>
     </div>
 
     @if (!$text)
-        <div class="text-center text-amber-700 text-sm py-12">No practice text available yet. Check back soon!</div>
+        <div class="text-center text-amber-700 text-sm py-12">No practice texts are available yet.</div>
     @else
 
     <!-- Rules modal -->
@@ -20,17 +20,17 @@
             <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
                 <i data-lucide="scroll-text" class="w-7 h-7 text-amber-700"></i>
             </div>
-            <h2 class="text-sm font-bold text-amber-900 mb-4">A quick heads-up</h2>
+            <h2 class="text-sm font-bold text-amber-900 mb-4">Before you start</h2>
             <ul class="text-left space-y-3 mb-5">
                 <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
-                    You cannot use your backspace button.
+                    Cannot use Backspace and Backspace is disabled.
                 </li>
             </ul>
-            <p class="text-sm text-amber-700 font-bold mb-6 leading-loose">HAVE FUN! 🐵</p>
+            <p class="text-sm text-amber-700 font-bold mb-6 leading-loose">HAVE FUN!</p>
             <button type="button" onclick="dismissRules()"
                 class="w-full bg-amber-700 text-white text-sm font-bold py-3 ui-button hover:bg-amber-800 transition-colors">
-                Got it. Let's practice!
+                Start practice
             </button>
         </div>
     </div>
@@ -76,7 +76,7 @@
                 autocapitalize="off"
                 spellcheck="false"
                 class="w-full border-2 border-amber-300 px-4 py-3 text-sm focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
-                placeholder="Click here and start typing..."
+                placeholder="Type the text here"
             >
         </div>
     </div>
@@ -86,7 +86,7 @@
         <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 border-2 border-green-400 mb-4">
             <i data-lucide="check-circle-2" class="w-7 h-7 text-green-600"></i>
         </div>
-        <h2 class="text-sm font-bold text-amber-800 mb-6">That's a wrap. Nice work!</h2>
+        <h2 class="text-sm font-bold text-amber-800 mb-6">Practice complete</h2>
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-amber-50 border-2 border-amber-200 p-4">
                 <div class="text-xl font-bold text-amber-700" id="result-wpm">—</div>
@@ -101,7 +101,7 @@
             <i data-lucide="refresh-cw" class="w-4 h-4"></i> Try Again
         </button>
         <a href="{{ route('rehearsal.index', ['previous' => $text->id]) }}" class="inline-flex items-center gap-2 ui-button button-outline mt-3">
-            <i data-lucide="shuffle" class="w-4 h-4" aria-hidden="true"></i> New passage
+            <i data-lucide="shuffle" class="w-4 h-4" aria-hidden="true"></i> New practice
         </a>
     </div>
 

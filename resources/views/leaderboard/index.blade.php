@@ -7,9 +7,9 @@
 
     <div class="page-heading leaderboard-heading">
         <div>
-            <span class="eyebrow">A little friendly competition</span>
-            <h1>The pace setters.</h1>
-            <p>Fast fingers. Sharp focus. See who's on top.</p>
+            <span class="eyebrow">Challenge results</span>
+            <h1>Leaderboard</h1>
+            <p>Compare scores, typing speed, and accuracy.</p>
         </div>
         <span class="pill whitespace-nowrap"><span class="status-dot"></span> Live rankings</span>
     </div>
@@ -110,7 +110,7 @@
                 <p class="font-bold text-amber-900 mb-1">Ranking order</p>
                 <p>Highest Score first &rarr; then Accuracy &rarr; then fastest time. Exact ties share the same rank.</p>
             </div>
-            <p class="text-amber-500">Tip: backspace is disabled, so accuracy is king. Type carefully! 🐵</p>
+            <p class="text-amber-500">Backspace is disabled, so check each letter as you type.</p>
         </div>
         <div class="px-5 pb-5">
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
