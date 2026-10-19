@@ -32,9 +32,8 @@
     <meta name="twitter:image"       content="@yield('og_image')">
     @endif
 
-    {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="shortcut icon" href="/favicon.ico">
+    {{-- WordSprint --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('WordSprint-icon.png') }}">
 
     {{-- Fonts --}}
 

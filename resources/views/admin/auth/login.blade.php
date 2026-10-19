@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | {{ config('app.name') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('wordsprint.ico') }}">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     @vite('resources/css/app.css')
 </head>
