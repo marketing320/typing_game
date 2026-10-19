@@ -13,8 +13,8 @@
         <a href="{{ route('home') }}" class="brand"><span class="brand-mark"><i data-lucide="keyboard" aria-hidden="true"></i></span><span class="brand-copy">{{ config('app.name') }}<small>Control room</small></span></a>
     </div>
     <div class="login-card">
-        <h1>Welcome back.</h1>
-        <p>Your game. Your community. All in one place.</p>
+        <h1>Admin sign in</h1>
+        <p>Manage challenges, players, and results.</p>
         @if ($errors->any())
         <div class="mb-4 bg-red-50 border border-red-200 text-red-600 rounded-lg px-4 py-3 text-sm">
             {{ $errors->first() }}

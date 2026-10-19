@@ -9,7 +9,7 @@
     <title>@yield('title', config('app.name')) | {{ config('app.name') }}</title>
 
     {{-- Core SEO --}}
-    <meta name="description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta name="description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <link rel="canonical" href="{{ request()->url() }}">
 
@@ -17,7 +17,7 @@
     <meta property="og:type"        content="@yield('og_type', 'website')">
     <meta property="og:site_name"   content="{{ config('app.name') }}">
     <meta property="og:title"       content="@yield('title', config('app.name')) | {{ config('app.name') }}">
-    <meta property="og:description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta property="og:description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     <meta property="og:url"         content="{{ request()->url() }}">
     @hasSection('og_image')
     <meta property="og:image"       content="@yield('og_image')">
@@ -27,7 +27,7 @@
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="@yield('twitter_card', 'summary')">
     <meta name="twitter:title"       content="@yield('title', config('app.name')) | {{ config('app.name') }}">
-    <meta name="twitter:description" content="@yield('meta_description', 'Test your typing speed and accuracy in a live challenge. Compete, climb the leaderboard, and prove your skills!')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Practice typing, enter a challenge, and compare your speed and accuracy on the leaderboard.')">
     @hasSection('og_image')
     <meta name="twitter:image"       content="@yield('og_image')">
     @endif
@@ -42,9 +42,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="game-ui min-h-screen">
+<body class="game-ui arcade-ui min-h-screen {{ request()->routeIs('home') ? 'is-title-screen' : '' }}">
     <a class="skip-link" href="#main-content">Skip to content</a>
 
+    <div class="arcade-surround" aria-hidden="true"><span>WORDSPRINT</span><span>TYPING ARCADE</span></div>
+    <div class="arcade-cabinet" id="arcade-cabinet">
     <header class="site-header">
         <div class="nav-shell">
             <a href="{{ route('home') }}" class="brand" aria-label="{{ config('app.name') }} home">
@@ -62,7 +64,9 @@
                     <i data-lucide="trophy" aria-hidden="true"></i><span>Leaderboard</span>
                 </a>
             </nav>
-            <span class="nav-note"><span class="status-dot"></span>Live</span>
+            <button type="button" class="cabinet-fullscreen" data-fullscreen-toggle hidden aria-label="Enter fullscreen" aria-pressed="false" title="Enter fullscreen">
+                <i data-lucide="maximize" aria-hidden="true"></i><span data-fullscreen-label>Fullscreen</span>
+            </button>
         </div>
     </header>
 
@@ -80,9 +84,11 @@
     </main>
 
     <footer class="site-footer">
-        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i> {{ config('app.name') }} <span>&middot; A little practice. A lot of potential.</span></p>
-        <a href="{{ route('leaderboard.index') }}">See who's setting the pace &nearr;</a>
+        <p class="footer-tagline"><i data-lucide="keyboard" aria-hidden="true"></i><span>Type with your keyboard</span></p>
+        <a href="{{ route('home') }}"><i data-lucide="house" aria-hidden="true"></i> Main menu</a>
     </footer>
+    <p class="sr-only" role="status" data-fullscreen-status></p>
+    </div>
 
     @stack('scripts')
     <script>lucide.createIcons();</script>

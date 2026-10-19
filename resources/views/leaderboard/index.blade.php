@@ -7,9 +7,9 @@
 
     <div class="page-heading leaderboard-heading">
         <div>
-            <span class="eyebrow">A little friendly competition</span>
-            <h1>The pace setters.</h1>
-            <p>Fast fingers. Sharp focus. See who's on top.</p>
+            <span class="eyebrow">Challenge results</span>
+            <h1>Leaderboard</h1>
+            <p>Compare scores, typing speed, and accuracy.</p>
         </div>
         <span class="pill whitespace-nowrap"><span class="status-dot"></span> Live rankings</span>
     </div>
@@ -83,13 +83,14 @@
 </div>
 
 <!-- Scoring info modal -->
-<div id="score-info-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+<div id="score-info-modal" role="dialog" aria-modal="true" aria-labelledby="score-modal-title" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
     <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 flex items-center justify-between">
-            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <h2 id="score-modal-title" class="text-sm font-bold text-white flex items-center gap-2">
                 <i data-lucide="calculator" class="w-4 h-4 text-amber-200"></i> How Points Work
             </h2>
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
+                aria-label="Close scoring information"
                 class="text-amber-300 hover:text-white">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
@@ -110,7 +111,7 @@
                 <p class="font-bold text-amber-900 mb-1">Ranking order</p>
                 <p>Highest Score first &rarr; then Accuracy &rarr; then fastest time. Exact ties share the same rank.</p>
             </div>
-            <p class="text-amber-500">Tip: backspace is disabled, so accuracy is king. Type carefully! 🐵</p>
+            <p class="text-amber-500">Backspace is disabled, so check each letter as you type.</p>
         </div>
         <div class="px-5 pb-5">
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"

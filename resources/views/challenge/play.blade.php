@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- Pre-game profile modal --}}
-<div id="profile-modal" class="fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
+<div id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title" class="fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
     <div class="bg-amber-50 max-w-sm w-full ui-card border-2 border-amber-900 my-6">
 
         {{-- Modal header --}}
@@ -13,8 +13,8 @@
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-sm font-bold text-white">Let's make it official.</h2>
-            <p class="text-amber-400 text-sm mt-1 leading-loose">A few details, then it's your time to shine.</p>
+            <h2 id="profile-title" class="text-sm font-bold text-white">Player details</h2>
+            <p class="text-amber-400 text-sm mt-1 leading-loose">Fill in the required fields before you start.</p>
         </div>
 
         <div class="p-5 space-y-4">
@@ -25,10 +25,10 @@
                     Full name <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="p-fullname"
-                    placeholder="e.g. Ahmad Ridhwan..."
+                    placeholder="Your full name"
                     maxlength="100"
                     class="w-full border-2 border-amber-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600 font-[inherit]">
-                <p id="err-name" class="hidden text-sm text-red-500 mt-1">name can't be blank bestie 😭</p>
+                <p id="err-name" class="hidden text-sm text-red-500 mt-1">Enter your full name.</p>
             </div>
 
             {{-- Email --}}
@@ -67,7 +67,7 @@
                         maxlength="20"
                         class="flex-1 min-w-0 border-2 border-amber-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600 font-[inherit]">
                 </div>
-                <p id="err-phone" class="hidden text-sm text-red-500 mt-1">don't ghost us, drop ur number 📱</p>
+                <p id="err-phone" class="hidden text-sm text-red-500 mt-1">Enter your phone number.</p>
             </div>
 
             {{-- Referral source --}}
@@ -84,13 +84,13 @@
                     </label>
                     @endforeach
                 </div>
-                <p id="err-referral" class="hidden text-sm text-red-500 mt-1">spill it, how'd you find us? 👀</p>
+                <p id="err-referral" class="hidden text-sm text-red-500 mt-1">Select how you found us.</p>
             </div>
 
             {{-- Submit --}}
             <button id="profile-btn" onclick="submitProfile()"
                 class="w-full bg-amber-800 text-amber-100 text-sm font-bold py-3.5 mt-2 ui-button hover:bg-amber-700 transition-colors">
-                Let's go &nearr;
+                Save and continue &nearr;
             </button>
 
         </div>
@@ -98,33 +98,33 @@
 </div>
 
 {{-- Rules modal (shown after profile, before START) --}}
-<div id="rules-modal" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
+<div id="rules-modal" role="dialog" aria-modal="true" aria-labelledby="challenge-rules-title" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
     <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900 my-6">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 text-center">
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="scroll-text" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-sm font-bold text-white">The game plan.</h2>
-            <p class="text-amber-400 text-sm mt-1 leading-loose">A quick read before you hit the keys.</p>
+            <h2 id="challenge-rules-title" class="text-sm font-bold text-white">Challenge rules</h2>
+            <p class="text-amber-400 text-sm mt-1 leading-loose">Read these before you start.</p>
         </div>
         <div class="p-5">
             <ul class="text-left space-y-3 mb-5">
                 <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
-                    You cannot use your backspace button.
+                    Backspace is disabled.
                 </li>
                 <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="lock" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
-                    All final score calculations are finalized and cannot be altered by any means.
+                    You cannot edit a submitted score.
                 </li>
                 @if($challenge->allow_retry_next_day || $challenge->require_unique_email)
                 <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="calendar-heart" class="w-4 h-4 text-green-600 shrink-0 mt-0.5"></i>
-                    You may come back and challenge us again tomorrow 😉
+                    You can return tomorrow if you have attempts remaining.
                 </li>
                 @endif
             </ul>
-            <p class="text-center text-sm text-amber-700 font-bold mb-5 leading-loose">HAVE FUN AND GOODLUCK! 🍀</p>
+            <p class="text-center text-sm text-amber-700 font-bold mb-5 leading-loose">Good luck!</p>
             <button type="button" onclick="dismissRules()"
                 class="w-full bg-amber-800 text-amber-100 text-sm font-bold py-3.5 ui-button hover:bg-amber-700 transition-colors">
                 I'm ready &nearr;
@@ -134,7 +134,7 @@
 </div>
 
 {{-- Main game --}}
-<div class="page-shell">
+<div class="page-shell play-screen">
 
     <div class="page-heading">
         <span class="eyebrow"><i data-lucide="zap" class="w-4 h-4" aria-hidden="true"></i> The official challenge</span>
@@ -163,6 +163,8 @@
         </div>
     </div>
 
+    @include('partials.arcade-track')
+
     <!-- Progress bar -->
     <div class="game-progress">
         <div id="progress-bar" class="bg-amber-600 h-full transition-all duration-100" style="width: 0%"></div>
@@ -173,8 +175,8 @@
         <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-700 border-2 border-amber-600 mb-5">
             <i data-lucide="keyboard" class="w-8 h-8 text-amber-200"></i>
         </div>
-        <h2 class="text-sm font-bold mb-3">Your moment. Your move.</h2>
-        <p class="text-amber-300 text-sm mb-6 leading-loose">Once you start, the timer begins.<br>You have ONE attempt.</p>
+        <h2 class="text-sm font-bold mb-3">Start your attempt</h2>
+        <p class="text-amber-300 text-sm mb-6 leading-loose">The timer starts when you press Start challenge.<br>You have one attempt.</p>
         <button id="start-btn" onclick="startGame()"
             class="bg-amber-400 text-amber-950 text-sm font-bold px-10 py-3 ui-button hover:bg-amber-300 transition-colors">
             Start challenge &nearr;
@@ -195,10 +197,11 @@
                 </div>
             </div>
             <div class="px-6 pb-6">
+                <label for="hidden-input" class="typing-input-label"><i data-lucide="keyboard" aria-hidden="true"></i> Type here to play</label>
                 <input id="hidden-input" type="text" aria-label="Type the challenge text here"
                     autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                     class="w-full border-2 border-amber-300 px-4 py-3 text-sm focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
-                    placeholder="Click here and start typing...">
+                    placeholder="Type the text here">
             </div>
         </div>
     </div>
@@ -401,13 +404,13 @@ async function submitProfile() {
             lucide.createIcons();
         } else {
             btn.disabled = false;
-            btn.textContent = "Let's go ↗";
-            alert(data.message || 'something went sideways 😭 try again!');
+            btn.textContent = 'Save and continue';
+            alert(data.message || 'Could not save your details. Please try again.');
         }
     } catch (e) {
         btn.disabled = false;
-        btn.textContent = "Let's go ↗";
-        alert('network error bestie 😭 refresh and try again');
+        btn.textContent = 'Save and continue';
+        alert('Could not connect. Check your connection and try again.');
     }
 }
 

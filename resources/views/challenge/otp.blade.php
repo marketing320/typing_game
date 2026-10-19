@@ -8,7 +8,7 @@
         <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-100 border-2 border-amber-300 mb-4">
             <i data-lucide="mail" class="w-8 h-8 text-amber-700"></i>
         </div>
-        <h1>You've got mail.</h1>
+        <h1>Verify your email</h1>
         <p class="text-amber-600 text-sm mt-3 leading-loose">Enter the 6-digit code we sent to <strong>{{ session('challenge_email') }}</strong></p>
     </div>
     @include('partials.challenge-steps', ['currentStep' => 2])
@@ -36,7 +36,7 @@
             <span id="otp-error-text"></span>
         </div>
 
-        <div class="form-intro"><h2>A quick inbox check</h2><p>Your six-digit code is your way in.</p></div>
+        <div class="form-intro"><h2>Verification code</h2></div>
         <div class="otp-grid mb-6">
             @for ($i = 0; $i < 6; $i++)
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Verification code digit {{ $i + 1 }}"
