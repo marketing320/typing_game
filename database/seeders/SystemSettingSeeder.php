@@ -10,7 +10,7 @@ class SystemSettingSeeder extends Seeder
     public function run(): void
     {
         $defaults = [
-            'site_name' => 'Typing Monkey',
+            'site_name' => 'WordSprint',
             'otp_expiry_minutes' => '10',
             'otp_max_attempts' => '5',
             'maintenance_mode' => '0',

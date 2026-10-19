@@ -1,4 +1,4 @@
-# 🐒 Typing Monkey
+# 🐒 WordSprint
 
 A mobile-first typing challenge game with rehearsal and official challenge modes, OTP verification, geofence enforcement, Phaser.js animated game scenes, and a full admin panel.
 

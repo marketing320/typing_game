@@ -23,6 +23,14 @@ class BlockMobile
                 'This challenge can only be played on our official PC setup. Please come to our booth and use the computer provided to take part.'
             );
 
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                    'code' => 'mobile_blocked',
+                ], 403);
+            }
+
             return response()->view('mobile-blocked', ['message' => $message], 403);
         }
 

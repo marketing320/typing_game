@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Admin') | Typing Game Admin</title>
+    <title>@yield('title', 'Admin') | {{ config('app.name') }} Admin</title>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/app.css'])
     @stack('head')
 </head>
-<body class="min-h-screen bg-gray-100 text-gray-800 font-sans">
+<body class="admin-ui">
+<a class="skip-link" href="#admin-main">Skip to content</a>
 
-<div class="flex min-h-screen">
+<div class="admin-shell">
     <!-- Sidebar -->
-    <aside class="w-60 bg-gray-900 text-gray-200 flex flex-col shrink-0">
-        <div class="px-6 py-5 border-b border-gray-700">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 font-bold text-lg text-white">
-                <i data-lucide="keyboard" class="w-5 h-5 text-amber-400"></i>
-                Admin Panel
+    <aside class="admin-sidebar">
+        <div>
+            <a href="{{ route('admin.dashboard') }}" class="brand">
+                <span class="brand-mark"><i data-lucide="keyboard" aria-hidden="true"></i></span>
+                <span class="brand-copy">{{ config('app.name') }}<small>Control room</small></span>
             </a>
         </div>
-        <nav class="flex-1 px-4 py-4 space-y-1 text-sm">
+        <p class="sidebar-label">Your workspace</p>
+        <nav class="admin-nav" aria-label="Admin navigation">
             @php
             $navItems = [
                 ['route' => 'admin.dashboard', 'icon' => 'layout-dashboard', 'label' => 'Dashboard', 'match' => 'admin.dashboard'],
@@ -36,20 +38,20 @@
             @endphp
             @foreach($navItems as $item)
             <a href="{{ route($item['route']) }}"
-               class="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs($item['match']) ? 'bg-gray-700 text-white' : 'text-gray-300' }}">
-                <i data-lucide="{{ $item['icon'] }}" class="w-4 h-4 shrink-0"></i>
+               @if(request()->routeIs($item['match'])) aria-current="page" @endif>
+                <i data-lucide="{{ $item['icon'] }}" aria-hidden="true"></i>
                 {{ $item['label'] }}
             </a>
             @endforeach
         </nav>
-        <div class="px-4 py-4 border-t border-gray-700">
-            <div class="text-xs text-gray-400 mb-2 flex items-center gap-1.5">
+        <div class="admin-account">
+            <div>
                 <i data-lucide="user" class="w-3.5 h-3.5"></i>
                 {{ session('admin_name', 'Admin') }}
             </div>
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="flex items-center gap-1.5 text-sm text-red-400 hover:text-red-200 transition">
+                <button type="submit">
                     <i data-lucide="log-out" class="w-4 h-4"></i> Logout
                 </button>
             </form>
@@ -57,12 +59,13 @@
     </aside>
 
     <!-- Main -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white shadow px-6 py-4 flex items-center justify-between">
-            <h1 class="text-lg font-semibold text-gray-700">@yield('page-title', 'Dashboard')</h1>
+    <div class="admin-content">
+        <header class="admin-header">
+            <div><span class="eyebrow">{{ config('app.name') }} / Workspace</span><h1>@yield('page-title', 'Dashboard')</h1></div>
+            <a href="{{ route('home') }}">View game <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
         </header>
 
-        <main class="flex-1 overflow-auto p-6">
+        <main id="admin-main" class="admin-main">
             @if (session('success'))
                 <div class="mb-4 bg-green-100 border border-green-300 text-green-700 rounded-lg px-4 py-3 text-sm flex items-center gap-2">
                     <i data-lucide="check-circle" class="w-4 h-4 shrink-0"></i>

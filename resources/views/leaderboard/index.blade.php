@@ -3,55 +3,40 @@
 @section('title', 'Leaderboard')
 
 @section('content')
-<div class="max-w-3xl mx-auto px-4 py-10">
+<div class="page-shell">
 
-    <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-100 border-2 border-amber-300 mb-3">
-            <i data-lucide="award" class="w-8 h-8 text-amber-700"></i>
+    <div class="page-heading leaderboard-heading">
+        <div>
+            <span class="eyebrow">A little friendly competition</span>
+            <h1>The pace setters.</h1>
+            <p>Fast fingers. Sharp focus. See who's on top.</p>
         </div>
-        <div class="flex items-center justify-center gap-3 mb-1">
-            <h1 class="text-sm font-bold text-amber-900">Leaderboard</h1>
-            <span class="inline-flex items-center gap-1.5 text-[10px] text-green-600 font-bold">
-                <span class="w-2 h-2 bg-green-500 animate-pulse inline-block"></span>LIVE
-            </span>
-            <button type="button" onclick="document.getElementById('score-info-modal').classList.remove('hidden')"
-                class="inline-flex items-center justify-center w-4 h-4 text-amber-500 hover:text-amber-700 transition-colors align-middle"
-                title="How are points calculated?">
-                <i data-lucide="info" class="w-3.5 h-3.5"></i>
-            </button>
-        </div>
-        <p class="text-amber-600 text-[10px] mt-1 leading-loose inline-flex items-center gap-1.5 justify-center">
-            
-        </p>
+        <span class="pill whitespace-nowrap"><span class="status-dot"></span> Live rankings</span>
     </div>
 
     @if($activeChallenge)
-    <div class="bg-amber-700 text-white px-4 py-3 text-[10px] text-center mb-6 flex items-center justify-center gap-2 border-2 border-amber-900 pixel-card"
-         style="box-shadow: 4px 4px 0 #1c0a00;">
-        <i data-lucide="trophy" class="w-4 h-4 shrink-0"></i>
-        <strong>{{ $activeChallenge->title }}</strong>
+    <div class="challenge-strip">
+        <div><i data-lucide="trophy" aria-hidden="true"></i><strong>{{ $activeChallenge->title }}</strong></div>
         @if($activeChallenge->status === 'active')
-            <span class="ml-1 bg-green-500 text-white text-[10px] px-2 py-0.5 inline-flex items-center gap-1">
-                <span class="w-1.5 h-1.5 bg-white animate-pulse inline-block"></span> LIVE
-            </span>
+            <span class="pill">Challenge live</span>
         @endif
     </div>
     @endif
 
     {{-- Empty state (shown when no entries on first load) --}}
-    <div id="empty-state" class="{{ $entries->isEmpty() ? '' : 'hidden' }} bg-white pixel-card p-12 text-center text-amber-500">
+    <div id="empty-state" class="{{ $entries->isEmpty() ? '' : 'hidden' }} bg-white ui-card p-12 text-center text-amber-500">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-50 border-2 border-amber-200 mb-3">
             <i data-lucide="inbox" class="w-7 h-7 text-amber-400"></i>
         </div>
-        <p class="mb-4 text-[10px] leading-loose">No completed attempts yet. Be the first!</p>
-        <a href="{{ route('challenge.access') }}" class="inline-flex items-center gap-2 bg-amber-600 text-white text-[10px] font-bold px-6 py-2.5 pixel-btn hover:bg-amber-700 transition-colors">
+        <p class="mb-4 text-sm leading-loose">No completed attempts yet. Be the first!</p>
+        <a href="{{ route('challenge.access') }}" class="inline-flex items-center gap-2 bg-amber-600 text-white text-sm font-bold px-6 py-2.5 ui-button hover:bg-amber-700 transition-colors">
             Enter Challenge <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
     </div>
 
     {{-- Table (shown when entries exist) --}}
-    <div id="table-wrap" class="{{ $entries->isEmpty() ? 'hidden' : '' }} bg-white pixel-card overflow-x-auto">
-        <table class="w-full text-[10px]">
+    <div id="table-wrap" class="{{ $entries->isEmpty() ? 'hidden' : '' }} bg-white ui-card overflow-x-auto">
+        <table class="w-full text-sm">
             <thead class="bg-amber-800 text-amber-100 border-b-2 border-amber-950">
                 <tr>
                     <th class="px-4 py-3 text-left">Rank</th>
@@ -69,11 +54,11 @@
                     data-rank="{{ $entry['rank'] }}">
                     <td class="px-4 py-3 font-bold">
                         @if($entry['rank'] === 1)
-                            <span class="inline-flex items-center justify-center w-6 h-6 bg-yellow-400 text-yellow-900 text-[10px] font-black border-2 border-yellow-600">{{ $entry['rank'] }}</span>
+                            <span class="inline-flex items-center justify-center w-6 h-6 bg-yellow-400 text-yellow-900 text-sm font-black border-2 border-yellow-600">{{ $entry['rank'] }}</span>
                         @elseif($entry['rank'] === 2)
-                            <span class="inline-flex items-center justify-center w-6 h-6 bg-gray-300 text-gray-700 text-[10px] font-black border-2 border-gray-400">{{ $entry['rank'] }}</span>
+                            <span class="inline-flex items-center justify-center w-6 h-6 bg-gray-300 text-gray-700 text-sm font-black border-2 border-gray-400">{{ $entry['rank'] }}</span>
                         @elseif($entry['rank'] === 3)
-                            <span class="inline-flex items-center justify-center w-6 h-6 bg-amber-600 text-white text-[10px] font-black border-2 border-amber-800">{{ $entry['rank'] }}</span>
+                            <span class="inline-flex items-center justify-center w-6 h-6 bg-amber-600 text-white text-sm font-black border-2 border-amber-800">{{ $entry['rank'] }}</span>
                         @else
                             <span class="text-gray-400">#{{ $entry['rank'] }}</span>
                         @endif
@@ -89,13 +74,19 @@
         </table>
     </div>
 
+    <div class="leaderboard-note">
+        <span>Ranked by score, then accuracy, then time. Updates every 5 seconds.</span>
+        <button type="button" onclick="document.getElementById('score-info-modal').classList.remove('hidden')">
+            <i data-lucide="info" aria-hidden="true"></i> How scoring works
+        </button>
+    </div>
 </div>
 
 <!-- Scoring info modal -->
 <div id="score-info-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-    <div class="bg-white max-w-sm w-full pixel-card border-2 border-amber-900" style="box-shadow: 5px 5px 0 #1c0a00;">
+    <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 flex items-center justify-between">
-            <h2 class="text-[11px] font-bold text-white flex items-center gap-2">
+            <h2 class="text-sm font-bold text-white flex items-center gap-2">
                 <i data-lucide="calculator" class="w-4 h-4 text-amber-200"></i> How Points Work
             </h2>
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
@@ -103,7 +94,7 @@
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
-        <div class="p-5 space-y-4 text-[10px] text-amber-800 leading-loose">
+        <div class="p-5 space-y-4 text-sm text-amber-800 leading-loose">
             <div class="bg-amber-50 border-2 border-amber-200 p-3 text-center">
                 <span class="font-bold text-amber-900">Score = WPM × Accuracy ÷ 100</span>
             </div>
@@ -123,8 +114,7 @@
         </div>
         <div class="px-5 pb-5">
             <button type="button" onclick="document.getElementById('score-info-modal').classList.add('hidden')"
-                class="w-full bg-amber-700 text-white text-[10px] font-bold py-3 pixel-btn hover:bg-amber-800 transition-colors"
-                style="box-shadow: 3px 3px 0 #1c0a00; border-color: #451a03;">
+                class="w-full bg-amber-700 text-white text-sm font-bold py-3 ui-button hover:bg-amber-800 transition-colors">
                 Got it!
             </button>
         </div>
@@ -155,9 +145,9 @@ function fmt(num, decimals) {
 }
 
 function rankBadge(rank) {
-    if (rank === 1) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-yellow-400 text-yellow-900 text-[10px] font-black border-2 border-yellow-600">${rank}</span>`;
-    if (rank === 2) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-gray-300 text-gray-700 text-[10px] font-black border-2 border-gray-400">${rank}</span>`;
-    if (rank === 3) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-amber-600 text-white text-[10px] font-black border-2 border-amber-800">${rank}</span>`;
+    if (rank === 1) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-yellow-400 text-yellow-900 text-sm font-black border-2 border-yellow-600">${rank}</span>`;
+    if (rank === 2) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-gray-300 text-gray-700 text-sm font-black border-2 border-gray-400">${rank}</span>`;
+    if (rank === 3) return `<span class="inline-flex items-center justify-center w-6 h-6 bg-amber-600 text-white text-sm font-black border-2 border-amber-800">${rank}</span>`;
     return `<span class="text-gray-400">#${rank}</span>`;
 }
 

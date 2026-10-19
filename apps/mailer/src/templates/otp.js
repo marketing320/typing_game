@@ -4,13 +4,13 @@ export function otpTemplate({ otp, username }) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Typing Monkey OTP</title>
+  <title>WordSprint OTP</title>
 </head>
 <body style="font-family: Arial, sans-serif; background: #fef3c7; margin: 0; padding: 20px;">
   <div style="max-width: 480px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
     <div style="text-align: center; margin-bottom: 24px;">
       <span style="font-size: 48px;">🐒</span>
-      <h1 style="color: #92400e; margin: 8px 0 0;">Typing Monkey</h1>
+      <h1 style="color: #92400e; margin: 8px 0 0;">WordSprint</h1>
     </div>
     <p style="color: #374151; font-size: 16px;">Hi <strong>${username}</strong>,</p>
     <p style="color: #374151; font-size: 16px;">Your OTP code for the challenge is:</p>

@@ -7,6 +7,8 @@ use App\Models\ChallengeAttempt;
 use App\Models\Player;
 use App\Models\TypingChallenge;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AdminPlayerController extends Controller
 {
@@ -119,10 +121,10 @@ class AdminPlayerController extends Controller
     public function destroy(Player $player)
     {
         $username = $player->username;
-        $player->delete();
+        $this->deletePlayers([$player->id]);
 
         return redirect()->route('admin.players.index')
-            ->with('success', "Player \"{$username}\" has been deleted.");
+            ->with('success', "Player \"{$username}\" has been permanently deleted and their attempts reset.");
     }
 
     public function bulkDestroy(Request $request)
@@ -133,10 +135,30 @@ class AdminPlayerController extends Controller
             return back()->with('error', 'No players selected.');
         }
 
-        $count = Player::whereIn('id', $ids)->delete();
+        $count = $this->deletePlayers($ids);
 
         return redirect()->route('admin.players.index')
-            ->with('success', "{$count} player(s) deleted.");
+            ->with('success', "{$count} player(s) permanently deleted and their attempts reset.");
+    }
+
+    private function deletePlayers(array $ids): int
+    {
+        [$count, $challengeIds] = DB::transaction(function () use ($ids) {
+            $playerIds = Player::whereIn('id', $ids)->lockForUpdate()->pluck('id');
+            $attempts = ChallengeAttempt::whereIn('player_id', $playerIds);
+            $challengeIds = (clone $attempts)->distinct()->pluck('challenge_id');
+
+            $attempts->delete();
+            $count = Player::whereIn('id', $playerIds)->forceDelete();
+
+            return [$count, $challengeIds];
+        });
+
+        foreach ($challengeIds as $challengeId) {
+            Cache::forget("leaderboard:challenge:{$challengeId}");
+        }
+
+        return $count;
     }
 
     public function bulkBlock(Request $request)

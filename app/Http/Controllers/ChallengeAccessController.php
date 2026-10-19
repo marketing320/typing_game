@@ -68,8 +68,9 @@ class ChallengeAccessController extends Controller
             return response()->json(['success' => false, 'message' => 'Please wait 60 seconds before requesting another OTP.'], 429);
         }
 
-        // Create or find player
-        $player = Player::firstOrCreate(
+        // Include legacy archived players from before admin deletion became permanent.
+        // Restore them only after they prove ownership by verifying the OTP.
+        $player = Player::withTrashed()->firstOrCreate(
             ['email' => $email],
             ['username' => $username]
         );

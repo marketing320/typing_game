@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Stats grid -->
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="admin-stats grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-xl p-5 shadow border border-gray-100">
         <div class="text-3xl font-extrabold text-blue-600">{{ $stats['total_players'] }}</div>
         <div class="text-sm text-gray-400 mt-1">Total Players</div>
