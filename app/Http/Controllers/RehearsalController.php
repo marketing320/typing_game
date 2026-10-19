@@ -11,12 +11,12 @@ class RehearsalController extends Controller
 {
     public function __construct(private ScoringService $scoring) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $text = TypingText::where('mode', 'rehearsal')
-            ->where('is_active', true)
-            ->inRandomOrder()
-            ->first();
+        $texts = TypingText::where('mode', 'rehearsal')->where('is_active', true);
+        $previousId = $request->integer('previous');
+        $text = (clone $texts)->where('id', '!=', $previousId)->inRandomOrder()->first()
+            ?? $texts->inRandomOrder()->first();
 
         if (!$text) {
             return view('rehearsal.index', ['text' => null]);

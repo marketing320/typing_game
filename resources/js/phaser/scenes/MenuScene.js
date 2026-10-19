@@ -29,7 +29,7 @@ export default class MenuScene extends Phaser.Scene {
         panel.lineStyle(3, 0xd97706, 1);
         panel.strokeRoundedRect(width / 2 - 130, 20, 260, 50, 10);
 
-        this.add.text(width / 2, 45, '🐒 Typing Monkey', {
+        this.add.text(width / 2, 45, '🐒 WordSprint', {
             fontSize: '20px', color: '#fef3c7', fontStyle: 'bold',
         }).setOrigin(0.5);
 

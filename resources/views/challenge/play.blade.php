@@ -6,58 +6,58 @@
 
 {{-- Pre-game profile modal --}}
 <div id="profile-modal" class="fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
-    <div class="bg-amber-50 max-w-sm w-full pixel-card border-2 border-amber-900 my-6" style="box-shadow: 5px 5px 0 #1c0a00;">
+    <div class="bg-amber-50 max-w-sm w-full ui-card border-2 border-amber-900 my-6">
 
         {{-- Modal header --}}
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 text-center">
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-[11px] font-bold text-white">hold up bestie ✋</h2>
-            <p class="text-amber-400 text-[10px] mt-1 leading-loose">just need ur deets before we cook 🔥</p>
+            <h2 class="text-sm font-bold text-white">Let's make it official.</h2>
+            <p class="text-amber-400 text-sm mt-1 leading-loose">A few details, then it's your time to shine.</p>
         </div>
 
         <div class="p-5 space-y-4">
 
             {{-- Full name --}}
             <div>
-                <label for="p-fullname" class="block text-[10px] font-bold text-amber-900 mb-1.5">
-                    ur full name <span class="text-red-500">*</span>
+                <label for="p-fullname" class="block text-sm font-bold text-amber-900 mb-1.5">
+                    Full name <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="p-fullname"
                     placeholder="e.g. Ahmad Ridhwan..."
                     maxlength="100"
-                    class="w-full border-2 border-amber-300 bg-white px-3 py-2.5 text-[11px] focus:outline-none focus:border-amber-600 font-[inherit]">
-                <p id="err-name" class="hidden text-[10px] text-red-500 mt-1">name can't be blank bestie 😭</p>
+                    class="w-full border-2 border-amber-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600 font-[inherit]">
+                <p id="err-name" class="hidden text-sm text-red-500 mt-1">name can't be blank bestie 😭</p>
             </div>
 
             {{-- Email --}}
             <div>
-                <label class="block text-[10px] font-bold text-amber-900 mb-1.5">
-                    email <span class="text-amber-400 font-normal text-[9px]">(verified + locked 🔒)</span>
+                <label class="block text-sm font-bold text-amber-900 mb-1.5">
+                    Email <span class="text-amber-500 font-normal text-sm">(verified &amp; locked)</span>
                 </label>
                 <input type="email" value="{{ $player->email }}" readonly
-                    class="w-full border-2 border-amber-200 bg-amber-100 px-3 py-2.5 text-[11px] text-amber-500 cursor-not-allowed font-[inherit]">
+                    class="w-full border-2 border-amber-200 bg-amber-100 px-3 py-2.5 text-sm text-amber-500 cursor-not-allowed font-[inherit]">
             </div>
 
             {{-- Phone --}}
             <div>
-                <label class="block text-[10px] font-bold text-amber-900 mb-1.5">
-                    phone no. <span class="text-red-500">*</span>
+                <label class="block text-sm font-bold text-amber-900 mb-1.5">
+                    Phone number <span class="text-red-500">*</span>
                 </label>
                 <div class="flex">
                     <div class="relative flex-shrink-0" id="cp-wrap">
                         <button type="button" id="cp-btn" onclick="toggleCpDd(event)"
-                            class="flex items-center gap-1 border-2 border-r-0 border-amber-300 bg-white px-2.5 py-2.5 text-[11px] font-bold text-amber-800 hover:bg-amber-50 focus:outline-none font-[inherit] h-full">
+                            class="flex items-center gap-1 border-2 border-r-0 border-amber-300 bg-white px-2.5 py-2.5 text-sm font-bold text-amber-800 hover:bg-amber-50 focus:outline-none font-[inherit] h-full">
                             <span id="cp-flag">🇲🇾</span>
-                            <span id="cp-code" class="text-[10px]">+60</span>
+                            <span id="cp-code" class="text-sm">+60</span>
                             <i data-lucide="chevron-down" class="w-3 h-3 text-amber-400"></i>
                         </button>
                         <div id="cp-dd" class="hidden absolute top-full left-0 mt-0.5 w-64 bg-white border-2 border-amber-300 shadow-xl z-[60]">
                             <div class="p-1.5 border-b border-amber-100">
                                 <input type="text" id="cp-search" placeholder="search country..."
                                     oninput="filterCp(this.value)"
-                                    class="w-full border border-amber-200 px-2 py-1.5 text-[10px] focus:outline-none font-[inherit]">
+                                    class="w-full border border-amber-200 px-2 py-1.5 text-sm focus:outline-none font-[inherit]">
                             </div>
                             <div id="cp-list" class="overflow-y-auto" style="max-height:180px;"></div>
                         </div>
@@ -65,33 +65,32 @@
                     <input type="tel" id="p-phone"
                         placeholder="12-3456789"
                         maxlength="20"
-                        class="flex-1 min-w-0 border-2 border-amber-300 bg-white px-3 py-2.5 text-[11px] focus:outline-none focus:border-amber-600 font-[inherit]">
+                        class="flex-1 min-w-0 border-2 border-amber-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600 font-[inherit]">
                 </div>
-                <p id="err-phone" class="hidden text-[10px] text-red-500 mt-1">don't ghost us, drop ur number 📱</p>
+                <p id="err-phone" class="hidden text-sm text-red-500 mt-1">don't ghost us, drop ur number 📱</p>
             </div>
 
             {{-- Referral source --}}
             <div>
-                <label class="block text-[10px] font-bold text-amber-900 mb-2">
-                    how'd you find us? 👀 <span class="text-red-500">*</span>
+                <label class="block text-sm font-bold text-amber-900 mb-2">
+                    How did you find us? <span class="text-red-500">*</span>
                 </label>
                 <div class="space-y-2">
                     @foreach($referralOptions as $opt)
                     <label class="flex items-center gap-2.5 cursor-pointer">
                         <input type="radio" name="referral_source" value="{{ trim($opt) }}"
                             class="w-3.5 h-3.5 accent-amber-700 cursor-pointer flex-shrink-0">
-                        <span class="text-[10px] text-amber-800 font-bold leading-relaxed">{{ trim($opt) }}</span>
+                        <span class="text-sm text-amber-800 font-bold leading-relaxed">{{ trim($opt) }}</span>
                     </label>
                     @endforeach
                 </div>
-                <p id="err-referral" class="hidden text-[10px] text-red-500 mt-1">spill it, how'd you find us? 👀</p>
+                <p id="err-referral" class="hidden text-sm text-red-500 mt-1">spill it, how'd you find us? 👀</p>
             </div>
 
             {{-- Submit --}}
             <button id="profile-btn" onclick="submitProfile()"
-                class="w-full bg-amber-800 text-amber-100 text-[10px] font-bold py-3.5 mt-2 pixel-btn hover:bg-amber-700 transition-colors"
-                style="border-color: #1c0a00; box-shadow: 3px 3px 0 #1c0a00;">
-                aight let's gooo!! &gt;&gt;
+                class="w-full bg-amber-800 text-amber-100 text-sm font-bold py-3.5 mt-2 ui-button hover:bg-amber-700 transition-colors">
+                Let's go &nearr;
             </button>
 
         </div>
@@ -100,95 +99,92 @@
 
 {{-- Rules modal (shown after profile, before START) --}}
 <div id="rules-modal" class="hidden fixed inset-0 bg-black/75 flex items-start justify-center z-50 p-4 overflow-y-auto">
-    <div class="bg-white max-w-sm w-full pixel-card border-2 border-amber-900 my-6" style="box-shadow: 5px 5px 0 #1c0a00;">
+    <div class="bg-white max-w-sm w-full ui-card border-2 border-amber-900 my-6">
         <div class="bg-amber-800 px-5 py-4 border-b-2 border-amber-950 text-center">
             <div class="inline-flex items-center justify-center w-10 h-10 bg-amber-700 border-2 border-amber-600 mb-2">
                 <i data-lucide="scroll-text" class="w-5 h-5 text-amber-200"></i>
             </div>
-            <h2 class="text-[11px] font-bold text-white">the rules 📜</h2>
-            <p class="text-amber-400 text-[10px] mt-1 leading-loose">read before you smash that keyboard</p>
+            <h2 class="text-sm font-bold text-white">The game plan.</h2>
+            <p class="text-amber-400 text-sm mt-1 leading-loose">A quick read before you hit the keys.</p>
         </div>
         <div class="p-5">
             <ul class="text-left space-y-3 mb-5">
-                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
                     You cannot use your backspace button.
                 </li>
-                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="lock" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
                     All final score calculations are finalized and cannot be altered by any means.
                 </li>
                 @if($challenge->allow_retry_next_day || $challenge->require_unique_email)
-                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="calendar-heart" class="w-4 h-4 text-green-600 shrink-0 mt-0.5"></i>
                     You may come back and challenge us again tomorrow 😉
                 </li>
                 @endif
             </ul>
-            <p class="text-center text-[10px] text-amber-700 font-bold mb-5 leading-loose">HAVE FUN AND GOODLUCK! 🍀</p>
+            <p class="text-center text-sm text-amber-700 font-bold mb-5 leading-loose">HAVE FUN AND GOODLUCK! 🍀</p>
             <button type="button" onclick="dismissRules()"
-                class="w-full bg-amber-800 text-amber-100 text-[10px] font-bold py-3.5 pixel-btn hover:bg-amber-700 transition-colors"
-                style="border-color: #1c0a00; box-shadow: 3px 3px 0 #1c0a00;">
-                i'm ready! &gt;&gt;
+                class="w-full bg-amber-800 text-amber-100 text-sm font-bold py-3.5 ui-button hover:bg-amber-700 transition-colors">
+                I'm ready &nearr;
             </button>
         </div>
     </div>
 </div>
 
 {{-- Main game --}}
-<div class="max-w-3xl mx-auto px-4 py-8">
+<div class="page-shell">
 
-    <div class="text-center mb-4">
-        <p class="text-amber-600 text-[10px] font-bold flex items-center justify-center gap-1.5">
-            <i data-lucide="trophy" class="w-4 h-4"></i>{{ $challenge->title }}
-        </p>
-        <p class="text-[10px] text-amber-500 mt-1 leading-loose">Player: <strong>{{ $player->username }}</strong> | One attempt only — type carefully!</p>
+    <div class="page-heading">
+        <span class="eyebrow"><i data-lucide="zap" class="w-4 h-4" aria-hidden="true"></i> The official challenge</span>
+        <h1>{{ $challenge->title }}</h1>
+        <p class="text-sm text-amber-500 mt-1 leading-loose">Player: <strong>{{ $player->username }}</strong> | One attempt only — type carefully!</p>
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-4 gap-3 mb-4">
-        <div class="bg-white p-3 text-center pixel-card">
+    @include('partials.challenge-steps', ['currentStep' => 3])
+    <div class="game-stats grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5" aria-label="Live typing statistics">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-amber-700" id="stat-wpm">0</div>
-            <div class="text-[10px] text-amber-500 mt-1">WPM</div>
+            <div class="text-sm text-amber-500 mt-1">WPM</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-green-600" id="stat-accuracy">100%</div>
-            <div class="text-[10px] text-amber-500 mt-1">Accuracy</div>
+            <div class="text-sm text-amber-500 mt-1">Accuracy</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-red-500" id="stat-mistakes">0</div>
-            <div class="text-[10px] text-amber-500 mt-1">Mistakes</div>
+            <div class="text-sm text-amber-500 mt-1">Mistakes</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-blue-600" id="stat-time">0s</div>
-            <div class="text-[10px] text-amber-500 mt-1">Time</div>
+            <div class="text-sm text-amber-500 mt-1">Time</div>
         </div>
     </div>
 
     <!-- Progress bar -->
-    <div class="w-full bg-amber-100 h-4 mb-4 border-2 border-amber-300">
+    <div class="game-progress">
         <div id="progress-bar" class="bg-amber-600 h-full transition-all duration-100" style="width: 0%"></div>
     </div>
 
     <!-- Game ready overlay -->
-    <div id="ready-overlay" class="bg-amber-800 p-8 text-center text-white mb-4 border-2 border-amber-950 pixel-card"
-         style="box-shadow: 4px 4px 0 #1c0a00;">
+    <div id="ready-overlay" class="bg-amber-800 p-8 text-center text-white mb-4 border-2 border-amber-950 ui-card">
         <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-700 border-2 border-amber-600 mb-5">
             <i data-lucide="keyboard" class="w-8 h-8 text-amber-200"></i>
         </div>
-        <h2 class="text-sm font-bold mb-3">READY TO TYPE?</h2>
-        <p class="text-amber-300 text-[10px] mb-6 leading-loose">Once you start, the timer begins.<br>You have ONE attempt.</p>
+        <h2 class="text-sm font-bold mb-3">Your moment. Your move.</h2>
+        <p class="text-amber-300 text-sm mb-6 leading-loose">Once you start, the timer begins.<br>You have ONE attempt.</p>
         <button id="start-btn" onclick="startGame()"
-            class="bg-amber-400 text-amber-950 text-xs font-bold px-10 py-3 pixel-btn hover:bg-amber-300 transition-colors"
-            style="border-color: #78350f; box-shadow: 3px 3px 0 #451a03;">
-            &gt;&gt; START CHALLENGE &lt;&lt;
+            class="bg-amber-400 text-amber-950 text-sm font-bold px-10 py-3 ui-button hover:bg-amber-300 transition-colors">
+            Start challenge &nearr;
         </button>
     </div>
 
     <!-- Typing area (hidden until started) -->
     <div id="game-area" class="hidden">
-        <div class="bg-white pixel-card overflow-hidden">
-            <div class="bg-amber-800 px-4 py-2 text-amber-100 text-[10px] flex justify-between items-center border-b-2 border-amber-950">
+        <div class="typing-card ui-card overflow-hidden">
+            <div class="typing-toolbar">
                 <span>Challenge Text</span>
                 <span id="monkey-display" class="inline-flex items-center justify-center w-6 h-6 bg-amber-700 border border-amber-600 transition-colors">
                     <i id="monkey-icon" data-lucide="keyboard" class="w-3.5 h-3.5 text-amber-200"></i>
@@ -199,9 +195,9 @@
                 </div>
             </div>
             <div class="px-6 pb-6">
-                <input id="hidden-input" type="text"
+                <input id="hidden-input" type="text" aria-label="Type the challenge text here"
                     autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                    class="w-full border-2 border-amber-300 px-4 py-3 text-xs focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
+                    class="w-full border-2 border-amber-300 px-4 py-3 text-sm focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
                     placeholder="Click here and start typing...">
             </div>
         </div>
@@ -212,7 +208,7 @@
         <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
             <i data-lucide="loader-2" class="w-7 h-7 text-amber-600 animate-spin"></i>
         </div>
-        <p class="text-amber-700 text-xs font-bold">Calculating your score...</p>
+        <p class="text-amber-700 text-sm font-bold">Calculating your score...</p>
     </div>
 
 </div>
@@ -337,7 +333,7 @@ let cpCode = '+60';
 function renderCpList(list) {
     document.getElementById('cp-list').innerHTML = list.map(c =>
         `<button type="button" onclick="pickCountry('${c.c}','${c.f}')"
-            class="w-full flex items-center gap-2 px-3 py-2 text-[10px] hover:bg-amber-50 text-left font-[inherit]">
+            class="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-amber-50 text-left font-[inherit]">
             <span>${c.f}</span>
             <span class="font-bold text-amber-800 flex-shrink-0">${c.c}</span>
             <span class="text-amber-600 truncate">${c.n}</span>
@@ -389,7 +385,7 @@ async function submitProfile() {
 
     const btn = document.getElementById('profile-btn');
     btn.disabled = true;
-    btn.textContent = 'saving ur deets... ⏳';
+    btn.textContent = 'Saving your details...';
 
     try {
         const res  = await fetch(SAVE_PROFILE_URL, {
@@ -405,12 +401,12 @@ async function submitProfile() {
             lucide.createIcons();
         } else {
             btn.disabled = false;
-            btn.textContent = "aight let's gooo!! >>";
+            btn.textContent = "Let's go ↗";
             alert(data.message || 'something went sideways 😭 try again!');
         }
     } catch (e) {
         btn.disabled = false;
-        btn.textContent = "aight let's gooo!! >>";
+        btn.textContent = "Let's go ↗";
         alert('network error bestie 😭 refresh and try again');
     }
 }

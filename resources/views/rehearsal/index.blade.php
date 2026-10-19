@@ -3,62 +3,61 @@
 @section('title', 'Practice Mode')
 
 @section('content')
-<div class="max-w-3xl mx-auto px-4 py-8">
-    <div class="flex items-center justify-center gap-3 mb-4">
-        <i data-lucide="target" class="w-6 h-6 text-amber-700"></i>
-        <h1 class="text-sm font-bold text-amber-900">Practice Mode</h1>
+<div class="page-shell">
+    <div class="page-heading">
+        <span class="eyebrow"><i data-lucide="command" class="w-4 h-4" aria-hidden="true"></i> The warm-up zone</span>
+        <h1>Your pace. Your practice.</h1>
+        <p>No sign-up. No pressure. Just a little better with every round.</p>
     </div>
-    <p class="text-center text-amber-600 text-[10px] mb-6 leading-loose">Practise freely. No registration needed.</p>
 
     @if (!$text)
-        <div class="text-center text-amber-700 text-xs py-12">No practice text available yet. Check back soon!</div>
+        <div class="text-center text-amber-700 text-sm py-12">No practice text available yet. Check back soon!</div>
     @else
 
     <!-- Rules modal -->
     <div id="rules-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-white p-8 max-w-sm w-full text-center pixel-card border-2 border-amber-900" style="box-shadow: 5px 5px 0 #1c0a00;">
+        <div class="bg-white p-8 max-w-sm w-full text-center ui-card border-2 border-amber-900">
             <div class="inline-flex items-center justify-center w-14 h-14 bg-amber-100 border-2 border-amber-300 mb-4">
                 <i data-lucide="scroll-text" class="w-7 h-7 text-amber-700"></i>
             </div>
-            <h2 class="text-xs font-bold text-amber-900 mb-4">Before You Start</h2>
+            <h2 class="text-sm font-bold text-amber-900 mb-4">A quick heads-up</h2>
             <ul class="text-left space-y-3 mb-5">
-                <li class="flex items-start gap-2.5 text-[10px] text-amber-800 leading-loose">
+                <li class="flex items-start gap-2.5 text-sm text-amber-800 leading-loose">
                     <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
                     You cannot use your backspace button.
                 </li>
             </ul>
-            <p class="text-[10px] text-amber-700 font-bold mb-6 leading-loose">HAVE FUN! 🐵</p>
+            <p class="text-sm text-amber-700 font-bold mb-6 leading-loose">HAVE FUN! 🐵</p>
             <button type="button" onclick="dismissRules()"
-                class="w-full bg-amber-700 text-white text-[10px] font-bold py-3 pixel-btn hover:bg-amber-800 transition-colors"
-                style="box-shadow: 3px 3px 0 #1c0a00; border-color: #451a03;">
-                Got it, let's practice! &gt;&gt;
+                class="w-full bg-amber-700 text-white text-sm font-bold py-3 ui-button hover:bg-amber-800 transition-colors">
+                Got it. Let's practice!
             </button>
         </div>
     </div>
 
     <!-- Stats bar -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4" id="stats-bar">
-        <div class="bg-white p-3 text-center pixel-card">
+    <div class="game-stats grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5" id="stats-bar" aria-label="Live typing statistics">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-amber-700" id="stat-wpm">0</div>
-            <div class="text-[10px] text-amber-500 mt-1">WPM</div>
+            <div class="text-sm text-amber-500 mt-1">WPM</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-green-600" id="stat-accuracy">100%</div>
-            <div class="text-[10px] text-amber-500 mt-1">Accuracy</div>
+            <div class="text-sm text-amber-500 mt-1">Accuracy</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-red-500" id="stat-mistakes">0</div>
-            <div class="text-[10px] text-amber-500 mt-1">Mistakes</div>
+            <div class="text-sm text-amber-500 mt-1">Mistakes</div>
         </div>
-        <div class="bg-white p-3 text-center pixel-card">
+        <div class="bg-white p-3 text-center ui-card">
             <div class="text-base font-bold text-blue-600" id="stat-time">0s</div>
-            <div class="text-[10px] text-amber-500 mt-1">Time</div>
+            <div class="text-sm text-amber-500 mt-1">Time</div>
         </div>
     </div>
 
     <!-- Typing area -->
-    <div class="bg-white pixel-card overflow-hidden" id="game-container">
-        <div class="bg-amber-800 px-4 py-2 text-amber-100 text-[10px] flex justify-between border-b-2 border-amber-950">
+    <div class="typing-card ui-card overflow-hidden" id="game-container">
+        <div class="typing-toolbar">
             <span>{{ $text->title ?? 'Practice Text' }}</span>
             <span class="capitalize">{{ $text->difficulty }} · {{ strtoupper($text->language) }}</span>
         </div>
@@ -70,36 +69,40 @@
         <div class="px-6 pb-6">
             <input
                 id="hidden-input"
+                aria-label="Type the practice text here"
                 type="text"
                 autocomplete="off"
                 autocorrect="off"
                 autocapitalize="off"
                 spellcheck="false"
-                class="w-full border-2 border-amber-300 px-4 py-3 text-xs focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
+                class="w-full border-2 border-amber-300 px-4 py-3 text-sm focus:outline-none focus:border-amber-600 font-[inherit] bg-amber-50"
                 placeholder="Click here and start typing..."
             >
         </div>
     </div>
 
     <!-- Result overlay -->
-    <div id="result-panel" class="hidden mt-6 bg-white pixel-card p-6 text-center">
+    <div id="result-panel" class="hidden mt-6 bg-white ui-card p-6 text-center">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 border-2 border-green-400 mb-4">
             <i data-lucide="check-circle-2" class="w-7 h-7 text-green-600"></i>
         </div>
-        <h2 class="text-sm font-bold text-amber-800 mb-6">[ GREAT JOB! ]</h2>
+        <h2 class="text-sm font-bold text-amber-800 mb-6">That's a wrap. Nice work!</h2>
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-amber-50 border-2 border-amber-200 p-4">
                 <div class="text-xl font-bold text-amber-700" id="result-wpm">—</div>
-                <div class="text-[10px] text-amber-500 mt-1">WPM</div>
+                <div class="text-sm text-amber-500 mt-1">WPM</div>
             </div>
             <div class="bg-green-50 border-2 border-green-200 p-4">
                 <div class="text-xl font-bold text-green-600" id="result-accuracy">—</div>
-                <div class="text-[10px] text-green-500 mt-1">Accuracy</div>
+                <div class="text-sm text-green-500 mt-1">Accuracy</div>
             </div>
         </div>
-        <button onclick="resetGame()" class="inline-flex items-center gap-2 bg-amber-700 text-white text-xs font-bold px-8 py-3 pixel-btn hover:bg-amber-800 transition-colors">
+        <button onclick="resetGame()" class="inline-flex items-center gap-2 bg-amber-700 text-white text-sm font-bold px-8 py-3 ui-button hover:bg-amber-800 transition-colors">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i> Try Again
         </button>
+        <a href="{{ route('rehearsal.index', ['previous' => $text->id]) }}" class="inline-flex items-center gap-2 ui-button button-outline mt-3">
+            <i data-lucide="shuffle" class="w-4 h-4" aria-hidden="true"></i> New passage
+        </a>
     </div>
 
     @endif

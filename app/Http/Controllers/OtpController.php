@@ -33,12 +33,9 @@ class OtpController extends Controller
             return response()->json(['success' => false, 'message' => $result['message']], 422);
         }
 
-        // Mark player as verified
-        $player = Player::where('email', $email)->first();
-        if ($player && !$player->email_verified_at) {
-            $player->update(['email_verified_at' => now(), 'last_login_at' => now()]);
-        } elseif ($player) {
-            $player->update(['last_login_at' => now()]);
+        $player = Player::withTrashed()->where('email', $email)->first();
+        if (!$player) {
+            return response()->json(['success' => false, 'message' => 'Session expired. Please start over.'], 400);
         }
 
         // Check if player can attempt
@@ -53,6 +50,15 @@ class OtpController extends Controller
         if (!$canAttempt['allowed']) {
             return response()->json(['success' => false, 'message' => $canAttempt['reason']], 403);
         }
+
+        if ($player->trashed()) {
+            $player->restore();
+        }
+
+        $player->update([
+            'email_verified_at' => $player->email_verified_at ?? now(),
+            'last_login_at' => now(),
+        ]);
 
         session(['verified_player_id' => $player->id]);
 

@@ -1,7 +1,7 @@
 {
   "name": "@typing-monkey/mailer",
   "version": "1.0.0",
-  "description": "OTP email delivery service for Typing Monkey",
+  "description": "OTP email delivery service for WordSprint",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

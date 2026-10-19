@@ -26,7 +26,7 @@
         {{-- Delete/Block/Unblock act on ticked rows only (never the whole dataset) --}}
         <span id="bulk-mutate-actions" class="flex items-center gap-2">
             <button type="button"
-                onclick="submitBulk('form-bulk-delete', 'Delete {count} selected player(s)?\nThey will be removed from the leaderboard.\nThis can be reversed in the database.')"
+                onclick="submitBulk('form-bulk-delete', 'Permanently delete {count} selected player(s)?\nTheir player records, attempts, and leaderboard scores will be removed from the database.\nThey can register again with the same email. This cannot be undone.')"
                 class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors">
                 Delete Selected
             </button>
@@ -160,7 +160,7 @@
                         </form>
                         @endif
                         <form method="POST" action="{{ route('admin.players.destroy', $p) }}"
-                              onsubmit="return confirm('Delete {{ addslashes($p->username) }}? They will be removed from the leaderboard.')">
+                              onsubmit="return confirm('Permanently delete {{ addslashes($p->username) }}? Their player record, attempts, and leaderboard scores will be removed from the database. This cannot be undone.')">
                             @csrf
                             @method('DELETE')
                             <button class="text-gray-400 hover:text-red-600 hover:underline text-xs transition-colors">Delete</button>

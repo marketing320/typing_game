@@ -15,9 +15,9 @@ export async function sendOtpEmail({ email, otp, username }) {
     const html = otpTemplate({ otp, username });
 
     await transporter.sendMail({
-        from: `"${process.env.SMTP_FROM_NAME || 'Typing Monkey'}" <${process.env.SMTP_FROM_EMAIL}>`,
+        from: `"${process.env.SMTP_FROM_NAME || 'WordSprint'}" <${process.env.SMTP_FROM_EMAIL}>`,
         to: email,
-        subject: `Your Typing Monkey OTP: ${otp}`,
+        subject: `Your WordSprint OTP: ${otp}`,
         html,
     });
 }

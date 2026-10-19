@@ -63,7 +63,7 @@
             </form>
             @endif
             <form method="POST" action="{{ route('admin.players.destroy', $player) }}"
-                  onsubmit="return confirm('Delete {{ addslashes($player->username) }}?\n\nTheir account will be soft-deleted and removed from the leaderboard.\nAttempt records are kept for auditing.')">
+                  onsubmit="return confirm('Permanently delete {{ addslashes($player->username) }}?\n\nTheir player record, attempts, and leaderboard scores will be removed from the database.\nThey can register again with the same email. This cannot be undone.')">
                 @csrf
                 @method('DELETE')
                 <button class="w-full bg-gray-100 text-gray-500 text-sm font-bold py-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition">
