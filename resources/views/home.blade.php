@@ -10,10 +10,12 @@
         <span class="distant-hill hill-one"></span><span class="distant-hill hill-two"></span>
     </div>
     <div class="title-content">
-        <p class="title-kicker"><span></span> THE TYPING ARCADE <span></span></p>
-        <h1 class="game-wordmark" aria-label="{{ config('app.name') }}">TYPE IT. <span>WIN IT</span><i data-lucide="zap" aria-hidden="true"></i></h1>
+        <h1 class="game-wordmark" aria-label="{{ config('app.name') }}">TYPE IT.<span>WIN IT</span><i data-lucide="zap" aria-hidden="true"></i></h1>
         <p class="title-tagline">Ready. Set. Type.</p>
-        <div class="title-race" aria-hidden="true">@include('partials.arcade-racer')</div>
+        <div class="title-race">
+            @include('partials.arcade-racer')
+            <button type="button" class="race-demo-toggle" data-race-motion-toggle aria-label="Pause car animation" aria-pressed="false" hidden></button>
+        </div>
         <section class="arcade-menu" aria-labelledby="mode-heading">
             <h2 id="mode-heading">CHOOSE YOUR MODE</h2>
             <div class="arcade-mode-grid">

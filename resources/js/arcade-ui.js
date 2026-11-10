@@ -27,15 +27,31 @@ if (cabinet && fullscreenButton && document.fullscreenEnabled) {
     });
 }
 
-// Mirror the existing character states instead of maintaining a second game state.
+const raceDemo = document.querySelector('.title-race');
+const motionToggle = document.querySelector('[data-race-motion-toggle]');
+
+if (raceDemo && motionToggle) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncMotionControl = () => { motionToggle.hidden = reducedMotion.matches; };
+    reducedMotion.addEventListener('change', syncMotionControl);
+    syncMotionControl();
+
+    motionToggle.addEventListener('click', () => {
+        const paused = raceDemo.classList.toggle('is-paused');
+        motionToggle.setAttribute('aria-pressed', String(paused));
+        motionToggle.setAttribute('aria-label', paused ? 'Resume car animation' : 'Pause car animation');
+    });
+}
+
+// Mirror correct character states; mistakes do not earn distance.
 const textDisplay = document.getElementById('text-display');
 const raceLane = document.querySelector('.race-lane');
 
 if (textDisplay && raceLane) {
     const updateKart = () => {
         const total = textDisplay.querySelectorAll('.char').length;
-        const typed = textDisplay.querySelectorAll('.char.text-green-600, .char.text-red-500').length;
-        raceLane.style.setProperty('--race-progress', `${total ? typed / total * 100 : 0}%`);
+        const correct = textDisplay.querySelectorAll('.char.text-green-600').length;
+        raceLane.style.setProperty('--race-progress', `${total ? correct / total * 100 : 0}%`);
     };
 
     new MutationObserver(updateKart).observe(textDisplay, {

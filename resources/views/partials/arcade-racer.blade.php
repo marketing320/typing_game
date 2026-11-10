@@ -1,5 +1,7 @@
-<svg class="racer-art" viewBox="0 0 800 260" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+<svg class="racer-art" viewBox="0 0 800 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
     <defs>
+        <path id="kart-drive-path" d="M-160 245L-40 179C130 91 570 91 840 176L960 240"/>
+        <clipPath id="kart-drive-clip"><rect width="800" height="260"/></clipPath>
         <linearGradient id="kart-body" x1="310" y1="80" x2="450" y2="208" gradientUnits="userSpaceOnUse"><stop stop-color="#FFDA72"/><stop offset="1" stop-color="#F7852D"/></linearGradient>
         <linearGradient id="kart-keys" x1="330" y1="80" x2="390" y2="170" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF0"/><stop offset="1" stop-color="#F3DFB0"/></linearGradient>
         <pattern id="finish-checks" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#FFF8D9"/><path d="M0 0h12v12H0zM12 12h12v12H12z" fill="#26434C"/></pattern>
@@ -12,7 +14,7 @@
     <path d="M-40 228C130 140 570 140 840 225" stroke="#D87542" stroke-width="8" stroke-dasharray="26 26"/>
     <path d="M-40 130C130 42 570 42 840 127" stroke="#D87542" stroke-width="8" stroke-dasharray="26 26"/>
     <g transform="translate(650 55) rotate(8)"><path d="M0 0v153" stroke="#26434C" stroke-width="7" stroke-linecap="round"/><path d="M4 0h72v48H4z" fill="url(#finish-checks)" stroke="#26434C" stroke-width="3"/><ellipse cy="155" rx="15" ry="4" fill="#26434C" fill-opacity=".2"/></g>
-    <g class="keyboard-kart">
+    <g clip-path="url(#kart-drive-clip)"><g class="road-driver"><g transform="translate(397 160) scale(.75) translate(-397 -160)">
         <ellipse cx="397" cy="207" rx="104" ry="15" fill="#193C49" fill-opacity=".25"/>
         <g stroke="#203D4B" stroke-width="5" stroke-linejoin="round">
             <rect x="307" y="161" width="34" height="48" rx="12" fill="#294653"/><path d="M314 177h20M314 190h20" stroke="#65808A"/>
@@ -30,5 +32,6 @@
         <path d="m318 163 22 8M447 171l19-10" stroke="#FFF2AA" stroke-width="6" stroke-linecap="round"/>
         <path d="M280 116h-41M272 136h-59M283 155h-36" stroke="#FFF6CE" stroke-width="7" stroke-linecap="round"/>
     </g>
+    </g></g>
     <g fill="#FFDC66" stroke="#A76B2B" stroke-width="2.5"><path d="m535 45 4 11 12 1-9 8 3 12-10-6-10 6 3-12-9-8 12-1 4-11Z"/><path d="m212 76 3 8 9 1-7 6 2 8-7-4-7 4 2-8-7-6 9-1 3-8Z"/></g>
 </svg>
