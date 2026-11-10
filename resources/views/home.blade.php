@@ -11,7 +11,7 @@
     </div>
     <div class="title-content">
         <p class="title-kicker"><span></span> THE TYPING ARCADE <span></span></p>
-        <h1 class="game-wordmark" aria-label="{{ config('app.name') }}">Word<span>Sprint</span><i data-lucide="zap" aria-hidden="true"></i></h1>
+        <h1 class="game-wordmark" aria-label="{{ config('app.name') }}">TYPE IT. <span>WIN IT</span><i data-lucide="zap" aria-hidden="true"></i></h1>
         <p class="title-tagline">Ready. Set. Type.</p>
         <div class="title-race" aria-hidden="true">@include('partials.arcade-racer')</div>
         <section class="arcade-menu" aria-labelledby="mode-heading">

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'WordSprint'),
+    'name' => env('APP_NAME', 'TYPE IT. WIN IT'),
 
     /*
     |--------------------------------------------------------------------------

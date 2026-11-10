@@ -35,7 +35,7 @@ class TypingTextSeeder extends Seeder
                 ]);
             }
 
-            foreach (TypingChallenge::where('title', 'WordSprint Grand Challenge')->get() as $challenge) {
+            foreach (TypingChallenge::where('title', 'TYPE IT. WIN IT Grand Challenge')->get() as $challenge) {
                 $activeText = $challenge->activeText();
 
                 // Preserve custom passages and any text deliberately disabled by an admin.

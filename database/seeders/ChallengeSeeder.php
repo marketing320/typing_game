@@ -13,9 +13,9 @@ class ChallengeSeeder extends Seeder
         $admin = Admin::where('email', 'admin@typingmonkey.local')->first();
 
         TypingChallenge::firstOrCreate(
-            ['title' => 'WordSprint Grand Challenge'],
+            ['title' => 'TYPE IT. WIN IT Grand Challenge'],
             [
-                'description' => 'Welcome to the official WordSprint Grand Challenge! Show off your speed and accuracy.',
+                'description' => 'Welcome to the official TYPE IT. WIN IT Grand Challenge! Show off your speed and accuracy.',
                 'status' => 'active',
                 'allow_retry_next_day' => false,
                 'max_attempts_per_day' => 1,
