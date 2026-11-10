@@ -32,8 +32,8 @@
     <meta name="twitter:image"       content="@yield('og_image')">
     @endif
 
-    {{-- WordSprint --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('WordSprint-icon.png') }}">
+    {{-- Brightstar Computer --}}
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('img/brightstar-icon.png') }}">
 
     {{-- Fonts --}}
 
@@ -44,7 +44,7 @@
 <body class="game-ui arcade-ui min-h-screen {{ request()->routeIs('home') ? 'is-title-screen' : '' }}">
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <div class="arcade-surround" aria-hidden="true"><span>WORDSPRINT</span><span>TYPING ARCADE</span></div>
+    <div class="arcade-surround" aria-hidden="true"><span class="surround-brand"><img src="{{ asset('img/brightstar-logo.png') }}" alt="" width="24" height="24"><span>BRIGHTSTAR COMPUTER TYPING ARENA GAME</span></span><span>TYPING ARCADE</span></div>
     <div class="arcade-cabinet" id="arcade-cabinet">
     <header class="site-header">
         <div class="nav-shell">

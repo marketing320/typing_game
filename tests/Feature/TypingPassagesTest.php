@@ -21,6 +21,7 @@ class TypingPassagesTest extends TestCase
         $this->seed(ChallengeSeeder::class);
 
         $this->assertDatabaseCount('typing_challenges', 1);
+        $this->assertDatabaseHas('typing_challenges', ['title' => 'TYPE IT. WIN IT Grand Challenge']);
         $this->assertSame(15, TypingText::where('mode', 'rehearsal')->where('is_active', true)->count());
         $this->assertSame(1, TypingText::where('mode', 'challenge')->where('is_active', true)->count());
         $this->assertDatabaseCount('typing_texts', 16);
@@ -28,7 +29,7 @@ class TypingPassagesTest extends TestCase
 
     public function test_upgrade_keeps_the_original_text_and_scores_for_previous_attempts(): void
     {
-        $challenge = TypingChallenge::factory()->create(['title' => 'WordSprint Grand Challenge']);
+        $challenge = TypingChallenge::factory()->create(['title' => 'TYPE IT. WIN IT Grand Challenge']);
         $original = 'Speed and focus are the keys to winning this typing challenge. Keep your eyes on the words and type with confidence.';
         $legacy = TypingText::factory()->create([
             'challenge_id' => $challenge->id, 'content' => $original,
