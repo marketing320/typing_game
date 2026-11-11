@@ -78,6 +78,33 @@ return [
             'content' => 'Before the 2:00 PM workshop, test all 8 computers. Set the volume to 30%, arrange 16 chairs, and place a sign beside Door 3.',
         ],
     ],
+    'additional_challenges' => [
+        [
+            'title' => 'Grand Challenge: The Community Garden',
+            'difficulty' => 'medium',
+            'content' => 'Every Saturday, our neighbors gather in the community garden. Some plant vegetables while others water the flowers along the fence. By working together and sharing useful ideas, they turn a quiet corner into a welcoming place for everyone to enjoy.',
+        ],
+        [
+            'title' => 'Grand Challenge: A Journey by Train',
+            'difficulty' => 'medium',
+            'content' => 'The morning train carried us past small towns and rolling hills. Through the window, we watched farmers prepare their fields beneath a clear sky. When we reached the station, a friendly guide was waiting to show us around the city.',
+        ],
+        [
+            'title' => 'Grand Challenge: Creative Problem Solving',
+            'difficulty' => 'medium',
+            'content' => 'Our team faced an unexpected problem before the exhibition opened. Instead of rushing, we listened to each suggestion and tested a simple solution. A few careful changes made everything work again, reminding us that patience and teamwork can make a difference.',
+        ],
+        [
+            'title' => 'Grand Challenge: Behind the Bakery Counter',
+            'difficulty' => 'medium',
+            'content' => 'Before sunrise, the bakery fills with the smell of fresh bread. The owner checks each tray while her assistant prepares the display. Soon, customers arrive for breakfast and friendly conversation. Careful preparation helps the busy morning run smoothly from the start.',
+        ],
+        [
+            'title' => 'Grand Challenge: Discovering the Night Sky',
+            'difficulty' => 'medium',
+            'content' => 'After dinner, we carried a telescope into the quiet backyard. Clouds slowly cleared, revealing bright stars above the trees. Our teacher explained how to find familiar patterns in the sky, and everyone took a turn observing the moon in surprising detail.',
+        ],
+    ],
     'challenge' => [
         'title' => 'Grand Challenge: Find Your Flow',
         'difficulty' => 'medium',

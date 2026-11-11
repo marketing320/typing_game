@@ -223,7 +223,6 @@ const START_URL         = '{{ route('challenge.start') }}';
 const SUBMIT_URL        = '{{ route('challenge.submit') }}';
 const SAVE_PROFILE_URL  = '{{ route('challenge.save-profile') }}';
 const CSRF              = document.querySelector('meta[name=csrf-token]').content;
-const TEXT_CONTENT      = @json($text->content);
 
 // ─── Country picker ───────────────────────────────────────────────────────────
 
@@ -434,7 +433,7 @@ function dismissRules() {
 // ─── Game ─────────────────────────────────────────────────────────────────────
 
 let attemptId    = null;
-let chars        = TEXT_CONTENT.split('');
+let chars        = [];
 let typedIndex   = 0;
 let mistakes     = 0;
 let startTime    = null;
@@ -495,6 +494,7 @@ async function startGame() {
         }
 
         attemptId = data.attempt_id;
+        chars = data.text.split('');
         document.getElementById('ready-overlay').classList.add('hidden');
         document.getElementById('game-area').classList.remove('hidden');
         buildTextDisplay();

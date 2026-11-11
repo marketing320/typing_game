@@ -3,6 +3,23 @@
 @section('title', 'Your Result')
 
 @section('content')
+@if($attempt->status === 'completed')
+    <div id="lucky-draw-modal" role="dialog" aria-modal="true" aria-labelledby="lucky-draw-title" aria-describedby="lucky-draw-message" class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4 overflow-y-auto" onkeydown="if (event.key === 'Escape') this.classList.add('hidden')">
+        <div class="bg-white max-w-sm w-full ui-card p-6 text-center my-auto">
+            <i data-lucide="{{ $attempt->accuracy > 80 ? 'trophy' : 'thumbs-up' }}" class="w-10 h-10 text-amber-600 mx-auto mb-4" aria-hidden="true"></i>
+            <h2 id="lucky-draw-title" class="text-xl font-bold text-amber-800 mb-4">{{ $attempt->accuracy > 80 ? 'Congratulations' : 'Thanks for playing!' }}</h2>
+            <p id="lucky-draw-message" class="text-sm text-amber-900 leading-loose mb-6">
+                @if($attempt->accuracy > 80)
+                    You have achieved 80% accuracy and are entitled to join our lucky draw! Please go to the counter to receive your lucky draw token.
+                @else
+                    You gave it a great shot! You’ll need over 80% accuracy to qualify for the lucky draw. Keep practising—we’re cheering you on! 🎉
+                @endif
+            </p>
+            <button type="button" onclick="document.getElementById('lucky-draw-modal').classList.add('hidden')" class="w-full bg-amber-700 text-white text-sm font-bold py-3 ui-button hover:bg-amber-800 transition-colors">Got it</button>
+        </div>
+    </div>
+@endif
+
 <div class="page-shell" style="max-width: 760px;">
 
     <div class="page-heading">

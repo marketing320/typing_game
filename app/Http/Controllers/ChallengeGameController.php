@@ -91,7 +91,11 @@ class ChallengeGameController extends Controller
             return response()->json(['success' => false, 'message' => $canAttempt['reason']], 403);
         }
 
-        $text = $challenge->activeText();
+        $text = $challenge->typingTexts()
+            ->where('mode', 'challenge')
+            ->where('is_active', true)
+            ->inRandomOrder()
+            ->first();
 
         if (!$text) {
             return response()->json(['success' => false, 'message' => 'No challenge text available.'], 404);

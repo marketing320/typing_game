@@ -37,12 +37,25 @@ class TypingTextSeeder extends Seeder
 
             foreach (TypingChallenge::where('title', 'TYPE IT. WIN IT Grand Challenge')->get() as $challenge) {
                 $activeText = $challenge->activeText();
+                $hasExistingTexts = $challenge->typingTexts()->where('mode', 'challenge')->exists();
+
+                foreach ($passages['additional_challenges'] as $passage) {
+                    TypingText::firstOrCreate([
+                        'challenge_id' => $challenge->id,
+                        'mode' => 'challenge',
+                        'title' => $passage['title'],
+                    ], $passage + [
+                        'language' => 'en',
+                        'is_active' => true,
+                        'created_by' => $adminId,
+                    ]);
+                }
 
                 // Preserve custom passages and any text deliberately disabled by an admin.
                 if ($activeText && $activeText->content !== 'Speed and focus are the keys to winning this typing challenge. Keep your eyes on the words and type with confidence.') {
                     continue;
                 }
-                if (! $activeText && $challenge->typingTexts()->where('mode', 'challenge')->exists()) {
+                if (! $activeText && $hasExistingTexts) {
                     continue;
                 }
 
