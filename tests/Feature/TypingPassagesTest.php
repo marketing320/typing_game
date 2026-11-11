@@ -23,8 +23,9 @@ class TypingPassagesTest extends TestCase
         $this->assertDatabaseCount('typing_challenges', 1);
         $this->assertDatabaseHas('typing_challenges', ['title' => 'TYPE IT. WIN IT Grand Challenge']);
         $this->assertSame(15, TypingText::where('mode', 'rehearsal')->where('is_active', true)->count());
-        $this->assertSame(1, TypingText::where('mode', 'challenge')->where('is_active', true)->count());
-        $this->assertDatabaseCount('typing_texts', 16);
+        $this->assertSame(6, TypingText::where('mode', 'challenge')->where('is_active', true)->count());
+        $this->assertSame(6, TypingText::where('mode', 'challenge')->where('difficulty', 'medium')->count());
+        $this->assertDatabaseCount('typing_texts', 21);
     }
 
     public function test_upgrade_keeps_the_original_text_and_scores_for_previous_attempts(): void
@@ -52,8 +53,8 @@ class TypingPassagesTest extends TestCase
         $this->assertSame($original, $attempt->fresh()->typingText->content);
         $this->assertSame(40.0, $attempt->fresh()->wpm);
         $this->assertNotSame($legacy->id, $challenge->activeText()->id);
-        $this->assertSame(1, $challenge->typingTexts()->where('is_active', true)->count());
-        $this->assertDatabaseCount('typing_texts', 18);
+        $this->assertSame(6, $challenge->typingTexts()->where('is_active', true)->count());
+        $this->assertDatabaseCount('typing_texts', 23);
     }
 
     public function test_repeat_seed_preserves_admin_edits_and_disabled_passages(): void
@@ -64,13 +65,16 @@ class TypingPassagesTest extends TestCase
         $challenge = TypingChallenge::firstOrFail();
         $text = $challenge->activeText();
         $text->update(['content' => 'The custom official challenge passage.']);
+        $disabled = $challenge->typingTexts()->where('id', '!=', $text->id)->firstOrFail();
+        $disabled->update(['is_active' => false]);
 
         $this->seed(TypingTextSeeder::class);
 
         $this->assertSame('A custom passage written by the admin.', $practice->fresh()->content);
         $this->assertFalse($practice->fresh()->is_active);
         $this->assertSame('The custom official challenge passage.', $challenge->activeText()->content);
-        $this->assertDatabaseCount('typing_texts', 16);
+        $this->assertFalse($disabled->fresh()->is_active);
+        $this->assertDatabaseCount('typing_texts', 21);
     }
 
     public function test_new_passage_excludes_the_previous_text_and_inactive_texts(): void
@@ -99,7 +103,7 @@ class TypingPassagesTest extends TestCase
         $this->get(route('rehearsal.index'))->assertOk()->assertViewHas('text', null);
     }
 
-    public function test_players_share_the_challenge_passage_and_it_scores_correctly(): void
+    public function test_assigned_challenge_passage_is_returned_and_scores_correctly(): void
     {
         $this->seed(ChallengeSeeder::class);
         $challenge = TypingChallenge::firstOrFail();
@@ -111,15 +115,31 @@ class TypingPassagesTest extends TestCase
                 ->assertViewHas('text', fn ($shared) => $shared->id === $text->id);
         }
 
-        $this->postJson(route('challenge.start'))->assertOk();
+        $response = $this->postJson(route('challenge.start'))->assertOk();
         $attempt = ChallengeAttempt::where('player_id', $players[1]->id)->firstOrFail();
-        $this->assertSame($text->id, $attempt->typing_text_id);
+        $text = $attempt->typingText;
+        $this->assertTrue($challenge->typingTexts()->where('is_active', true)->pluck('id')->contains($text->id));
+        $response->assertJsonPath('text_id', $text->id)->assertJsonPath('text', $text->content);
         $this->postJson(route('challenge.submit'), [
             'attempt_id' => $attempt->id,
             'user_input' => $text->content,
             'duration_seconds' => 120,
         ])->assertOk()->assertJsonPath('accuracy', 100);
-        $this->assertSame(40, $attempt->fresh()->total_words);
+        $this->assertSame(str_word_count($text->content), $attempt->fresh()->total_words);
         $this->assertSame('completed', $attempt->fresh()->status);
+    }
+
+    public function test_random_challenge_assignment_excludes_inactive_practice_and_other_challenge_texts(): void
+    {
+        $challenge = TypingChallenge::factory()->create();
+        $text = TypingText::factory()->create(['challenge_id' => $challenge->id]);
+        TypingText::factory()->create(['challenge_id' => $challenge->id, 'is_active' => false]);
+        TypingText::factory()->create(['challenge_id' => $challenge->id, 'mode' => 'rehearsal']);
+        TypingText::factory()->create(['challenge_id' => TypingChallenge::factory()->create(['status' => 'draft'])->id]);
+
+        $this->withSession(['verified_player_id' => Player::factory()->create()->id])
+            ->postJson(route('challenge.start'))->assertOk()
+            ->assertJsonPath('text_id', $text->id)
+            ->assertJsonPath('text', $text->content);
     }
 }

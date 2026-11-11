@@ -67,6 +67,41 @@ class InterfaceFlowTest extends TestCase
             ->assertSee(route('leaderboard.index'), false);
     }
 
+    public function test_completed_challenges_show_the_popup_matching_lucky_draw_eligibility(): void
+    {
+        $player = Player::factory()->create();
+        $challenge = TypingChallenge::factory()->create();
+        $text = TypingText::factory()->create(['challenge_id' => $challenge->id]);
+        $attempt = ChallengeAttempt::factory()->create([
+            'player_id' => $player->id,
+            'challenge_id' => $challenge->id,
+            'typing_text_id' => $text->id,
+        ]);
+
+        foreach ([0, 79.99, 80, 80.01, 100] as $accuracy) {
+            $attempt->update(['accuracy' => $accuracy]);
+            $response = $this->get(route('challenge.result', $attempt))->assertOk()
+                ->assertSee('id="lucky-draw-modal"', false)
+                ->assertSee('Got it');
+
+            if ($accuracy > 80) {
+                $response->assertSee('id="lucky-draw-modal"', false)
+                    ->assertSee('Congratulations')
+                    ->assertDontSee('You gave it a great shot!')
+                    ->assertSee('You have achieved 80% accuracy and are entitled to join our lucky draw! Please go to the counter to receive your lucky draw token.');
+            } else {
+                $response->assertSee('Thanks for playing!')
+                    ->assertSee('You gave it a great shot! You’ll need over 80% accuracy to qualify for the lucky draw. Keep practising—we’re cheering you on! 🎉', false)
+                    ->assertDontSee('Congratulations')
+                    ->assertDontSee('Please go to the counter');
+            }
+        }
+
+        $attempt->update(['status' => 'started']);
+        $this->get(route('challenge.result', $attempt))->assertOk()
+            ->assertDontSee('id="lucky-draw-modal"', false);
+    }
+
     public function test_admin_workspace_pages_and_forms_still_render(): void
     {
         $this->get(route('admin.login'))->assertOk()
