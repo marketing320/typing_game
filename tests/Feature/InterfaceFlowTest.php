@@ -75,7 +75,7 @@ class InterfaceFlowTest extends TestCase
             ->assertSee(route('admin.login.post'), false);
 
         foreach (['site_name', 'otp_expiry_minutes', 'otp_max_attempts', 'maintenance_mode', 'referral_source_options', 'mobile_block_enabled', 'mobile_block_message'] as $key) {
-            SystemSetting::create(['setting_key' => $key, 'setting_value' => '']);
+            SystemSetting::updateOrCreate(['setting_key' => $key], ['setting_value' => '']);
         }
 
         $this->withSession(['admin_id' => 1, 'admin_name' => 'Admin']);
